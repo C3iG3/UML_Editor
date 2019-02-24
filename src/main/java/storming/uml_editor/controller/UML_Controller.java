@@ -25,7 +25,9 @@ public class UML_Controller {
 	 * Gets an element from the model. This element must be cast once retrieved
 	 * 
 	 * @param key The key of the object being requested
-	 * @return The requested object as a UML_Element; null if the object does not exist in the model
+	 * @return 
+	 * 	The requested object as a UML_Element; 
+	 * 	null if the object does not exist in the model
 	 */
 	public UML_Element get(long key) {
 		try {
