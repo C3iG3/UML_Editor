@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="404.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="storming.uml_editor.view.ViewController">
+   <children>
+      <MenuBar fx:id="MenuBar" layoutY="-1.0" prefHeight="17.0" prefWidth="633.0">
+        <menus>
+          <Menu fx:id="File" mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="New" mnemonicParsing="false" onAction="#fileNew" text="New" />
+                  <MenuItem fx:id="Open" mnemonicParsing="false" onAction="#fileOpen" text="Open" />
+                  <MenuItem fx:id="Save" mnemonicParsing="false" onAction="#fileSave" text="Save" />
+                  <MenuItem fx:id="SaveAs" mnemonicParsing="false" onAction="#fileSavAs" text="Save As" />
+              <MenuItem fx:id="Close" mnemonicParsing="false" onAction="#fileClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu fx:id="Edit" mnemonicParsing="false" text="Edit">
+            <items>
+                  <MenuItem fx:id="Undo" mnemonicParsing="false" onAction="#editUndo" text="Undo" />
+                  <MenuItem fx:id="Cut" mnemonicParsing="false" onAction="#editCut" text="Cut" />
+                  <MenuItem fx:id="Copy" mnemonicParsing="false" onAction="#editCopy" text="Copy" />
+                  <MenuItem fx:id="Paste" mnemonicParsing="false" onAction="#EditPaste" text="Paste" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="ClassBox" layoutY="24.0" mnemonicParsing="false" onAction="#buttonClickClassBox" prefHeight="25.0" prefWidth="178.0" text="Class Box" />
+      <Button fx:id="Select" layoutY="49.0" mnemonicParsing="false" onAction="#buttonClickSelect" prefHeight="25.0" prefWidth="178.0" text="Select" />
+      <Button fx:id="Delete" layoutY="74.0" mnemonicParsing="false" onAction="#buttonClickDelete" prefHeight="25.0" prefWidth="178.0" text="Delete" />
+      <Button fx:id="Comment" layoutY="99.0" mnemonicParsing="false" onAction="#buttonClickComment" prefHeight="25.0" prefWidth="178.0" text="Comment" />
+      <Button fx:id="Association" layoutY="124.0" mnemonicParsing="false" onAction="#buttonClickAssociation" prefHeight="25.0" prefWidth="178.0" text="Association" />
+      <Button fx:id="Generalization" layoutY="149.0" mnemonicParsing="false" onAction="#buttonClickGeneralization" prefHeight="25.0" prefWidth="178.0" text="Generalization" />
+      <Button fx:id="Dependency" layoutY="174.0" mnemonicParsing="false" onAction="#buttonClickDependency" prefHeight="25.0" prefWidth="178.0" text="Dependency" />
+      <Button fx:id="Aggregation" layoutY="199.0" mnemonicParsing="false" onAction="#buttonClickAggregation" prefHeight="25.0" prefWidth="178.0" text="Aggregation" />
+      <Button fx:id="Composition" layoutY="224.0" mnemonicParsing="false" onAction="#buttonClickComposition" prefHeight="25.0" prefWidth="178.0" text="Composition" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="119.0" layoutX="295.0" layoutY="137.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="158.0">
+         <effect>
+            <ColorAdjust brightness="0.33" contrast="1.0" hue="1.0" saturation="-1.0" />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="MOVE" />
+         </cursor>
+      </Rectangle>
+   </children>
+</AnchorPane>
