@@ -1,78 +1,212 @@
 package storming.uml_editor.model.things.classbox;
 
-public class UML_Model_Attribute {
-	private char visibility;
-	private String name, type;
+/**
+ * A class that represents a UML Attribute
+ */
+public class UML_Attribute {
+	protected Character visibility = null;
+	protected String name = null, type = null;
+	
 	private Long key = null;
 	
-	public UML_Model_Attribute() {
-		this(' ', "", "");
+	/**
+	 * The default constructor for a UML Attribute
+	 */
+	public UML_Attribute() {}
+	
+	/**
+	 * Constructs the attribute with a name
+	 * 
+	 * @param name The name for the attribute
+	 */
+	public UML_Attribute(String name) {
+		this(null, name, null);
 	}
 	
-	public UML_Model_Attribute(char visibility) {
-		this(visibility, "", "");
+	/**
+	 * Constructs the attribute with a name and type
+	 * 
+	 * @param name The name for the attribute
+	 * @param type The type of the attribute
+	 */
+	public UML_Attribute(String name, String type) {
+		this(null, name, type);
 	}
 	
-	public UML_Model_Attribute(String name) {
-		this(' ', name, "");
+	/**
+	 * Constructs the attribute with a visibility, name, and type
+	 * 
+	 * @param visibility The visibility of the attribute
+	 * @param name The name for the attribute
+	 * @param type The type of the attribute
+	 */
+	public UML_Attribute(Character visibility, String name, String type) {
+		putVisibility(visibility);
+		putName(name);
+		putType(type);
 	}
 	
-	public UML_Model_Attribute(String name, String type) {
-		this(' ', name, type);
-	}
-	
-	public UML_Model_Attribute(char visibility, String name, String type) {
-		this.visibility = visibility;
-		this.name = name;
-		this.type = type;
-	}
-	
-	public char getVisibility() {
+	/**
+	 * Gets the visibility of the attribute
+	 * 
+	 * @return
+	 *	The visibility of the attribute, if it has one;
+	 *	null otherwise
+	 */
+	public Character getVisibility() {
 		return visibility;
 	}
 	
-	public void putVisibility(char visibility) {
+	/**
+	 * Puts a visibility on the attribute
+	 * 
+	 * @param visibility The visibility to put on the attribute
+	 * @return
+	 * 	The previous visibility, if it had one;
+	 * 	null otherwise
+	 */
+	public Character putVisibility(Character visibility) {
+		var temp = this.visibility;
 		this.visibility = visibility;
-	}
-	
-	public char removeVisibility() {
-		var temp = visibility;
-		visibility = ' ';
 		return temp;
 	}
 	
+	/**
+	 * Removes the visibility of the attribute
+	 * 
+	 * @return
+	 * 	The removed visibility, if it had one;
+	 * 	null otherwise
+	 */
+	public Character removeVisibility() {
+		return putVisibility(null);
+	}
+	
+	/**
+	 * Checks if this attribute has a visibility. This does NOT check if the
+	 * 	visibility is empty, but only if it is null
+	 * 
+	 * @return
+	 * 	TRUE if there is a visibility;
+	 * 	FALSE otherwise
+	 */
+	public boolean hasVisibility() {
+		return visibility != null;
+	}
+	
+	/**
+	 * Gets the name of the attribute
+	 * 
+	 * @return
+	 * 	The name of the attribute, if it has one;
+	 * 	null otherwise
+	 */
 	public String getName() {
 		return name;
 	}
 	
-	public void putName(String name) {
+	/**
+	 * Puts a name on this attribute
+	 * 
+	 * @param name The name for the attribute
+	 * @return
+	 * 	The previous name of the attribute, if it had one;
+	 * 	null otherwise
+	 */
+	public String putName(String name) {
+		var temp = this.name;
 		this.name = name;
-	}
-	
-	public String removeName() {
-		var temp = name;
-		name = "";
 		return temp;
 	}
 	
+	/**
+	 * Removes the name from this attribute
+	 * 
+	 * @return
+	 * 	The removed name, if there was one;
+	 * 	null otherwise
+	 */
+	public String removeName() {
+		return putName(null);
+	}
+	
+	/**
+	 * Checks if this attribute has a name. This does NOT check if the
+	 * 	name is empty, but only if it is null
+	 * 
+	 * @return
+	 * 	TRUE if there is a name;
+	 * 	FALSE otherwise
+	 */
+	public boolean hasName() {
+		return name != null;
+	}
+	
+	/**
+	 * Gets the type of this attribute
+	 * 
+	 * @return
+	 * 	The type, if there is one;
+	 * 	null otherwise
+	 */
 	public String getType() {
 		return type;
 	}
 	
-	public void putType(String type) {
+	/**
+	 * Puts a type on this attribute
+	 * 
+	 * @param type The type for the attribute
+	 * @return
+	 * 	The previous type, if there was one;
+	 * 	null otherwise
+	 */
+	public String putType(String type) {
+		var temp = this.type;
 		this.type = type;
-	}
-	
-	public String removeType() {
-		var temp = type;
-		type = "";
 		return temp;
 	}
 	
-	public long getKey() {
+	/**
+	 * Removes the type from this attribute
+	 * 
+	 * @return
+	 * 	The previous type, if there was one;
+	 * 	null otherwise
+	 */
+	public String removeType() {
+		return putType(null);
+	}
+	
+	/**
+	 * Checks if this attribute has a type. This does NOT check if the
+	 * 	type is empty, but only if it is null
+	 * 
+	 * @return
+	 * 	TRUE if there is a type;
+	 * 	FALSE otherwise
+	 */
+	public boolean hasType() {
+		return type != null;
+	}
+	
+	/**
+	 * Gets the key of this attribute. If the key is null this attribute is not owned by a class box.
+	 * This key is NOT recognized by the model, it is ONLY recognized by the owning class box
+	 * 
+	 * @return 
+	 * 	The attribute's key, if it has one;
+	 * 	null otherwise
+	 */
+	public Long getKey() {
 		return key;
 	}
 	
+	/**
+	 * Sets the key of this attribute. Should only ever be called (and be accessible) by a class box
+	 * 
+	 * @param newKey The key for the attribute
+	 */
 	void setKey(long newKey) {
 		key = newKey;
 	}

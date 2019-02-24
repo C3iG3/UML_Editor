@@ -1,11 +1,22 @@
 package storming.uml_editor.model.things;
 
-public abstract class UML_Model_StructuralThing extends UML_Model_Thing {
-	protected UML_Model_StructuralThing() {
-		this("");
+/**
+ * A class that represents a UML Structural Thing
+ */
+public abstract class UML_StructuralThing extends UML_Thing {
+	/**
+	 * The default constructor for a UML Structural Thing
+	 */
+	protected UML_StructuralThing() {
+		super();
 	}
 	
-	protected UML_Model_StructuralThing(String name) {
+	/**
+	 * Constructs the structural thing with a name
+	 * 
+	 * @param name The name for the structural thing
+	 */
+	protected UML_StructuralThing(String name) {
 		super(name);
 	}
 }

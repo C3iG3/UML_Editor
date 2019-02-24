@@ -1,13 +1,24 @@
 package storming.uml_editor.model.things;
 
-import storming.uml_editor.model.UML_Model_Element;
+import storming.uml_editor.model.UML_Element;
 
-public abstract class UML_Model_Thing extends UML_Model_Element {
-	protected UML_Model_Thing() {
-		this("");
+/**
+ * A class that represents a UML Thing
+ */
+public abstract class UML_Thing extends UML_Element {
+	/**
+	 * The default constructor for a UML Thing
+	 */
+	protected UML_Thing() {
+		super();
 	}
 	
-	protected UML_Model_Thing(String name) {
+	/**
+	 * Constructs the thing with a name
+	 * 
+	 * @param name The name for the thing
+	 */
+	protected UML_Thing(String name) {
 		super(name);
 	}
 }

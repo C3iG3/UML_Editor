@@ -1,14 +1,36 @@
-package storming.uml_editor.model.relationships;
+package storming.uml_editor.model.relationships.associations;
 
-import storming.uml_editor.model.things.UML_Model_Thing;
+import storming.uml_editor.model.things.UML_Thing;
 
-public class UML_Model_Aggregation extends UML_Model_Association {
-	public UML_Model_Aggregation(UML_Model_Thing source, UML_Model_Thing target) {
-		this("", source, target);
+/**
+ * The default constructor for a UML Aggregation
+ */
+public class UML_Aggregation extends UML_Association {
+	/**
+	 * The default constructor for a UML Aggregation
+	 */
+	public UML_Aggregation() {
+		super();
 	}
 	
-	public UML_Model_Aggregation(String name, UML_Model_Thing source, UML_Model_Thing target) {
+	/**
+	 * Constructs the aggregation with a source and target
+	 * 
+	 * @param source The source UML Thing
+	 * @param target The target UML Thing
+	 */
+	public UML_Aggregation(UML_Thing source, UML_Thing target) {
+		super(source, target);
+	}
+	
+	/**
+	 * Constructs the aggregation with a name, source, and target
+	 * 
+	 * @param name The name for the aggregation
+	 * @param source The source UML Thing
+	 * @param target The target UML Thing
+	 */
+	public UML_Aggregation(String name, UML_Thing source, UML_Thing target) {
 		super(name, source, target);
-		// TODO Auto-generated constructor stub
 	}
 }

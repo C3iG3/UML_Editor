@@ -1,15 +1,37 @@
-package storming.uml_editor.model.relationships;
+package storming.uml_editor.model.relationships.associations;
 
-import storming.uml_editor.model.things.UML_Model_Thing;
+import storming.uml_editor.model.things.UML_Thing;
 
-public class UML_Model_Composition extends UML_Model_Association {
-	public UML_Model_Composition(UML_Model_Thing source, UML_Model_Thing target) {
-		this("", source, target);
+/**
+ * The default constructor for a UML Composition
+ */
+public class UML_Composition extends UML_Association {
+	/**
+	 * The default constructor for a UML Composition
+	 */
+	public UML_Composition() {
+		super();
 	}
 	
-	public UML_Model_Composition(String name, UML_Model_Thing source, UML_Model_Thing target) {
+	/**
+	 * Constructs the composition with a source and target
+	 * 
+	 * @param source The source UML Thing
+	 * @param target The target UML Thing
+	 */
+	public UML_Composition(UML_Thing source, UML_Thing target) {
+		super(source, target);
+	}
+	
+	/**
+	 * Constructs the composition with a name, source, and target
+	 * 
+	 * @param name The name for the composition
+	 * @param source The source UML Thing
+	 * @param target The target UML Thing
+	 */
+	public UML_Composition(String name, UML_Thing source, UML_Thing target) {
 		super(name, source, target);
-		// TODO Auto-generated constructor stub
 	}
 
 }
