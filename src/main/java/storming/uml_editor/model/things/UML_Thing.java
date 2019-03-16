@@ -7,6 +7,8 @@ public abstract class UML_Thing extends UML_Element {
 	// members variables
 	private double xCoordinate = 0.0;
 	private double yCoordinate = 0.0;
+	private int width; 
+	private int height;
 	
 	public void setX(double x) {
 		this.xCoordinate = x;
@@ -23,6 +25,23 @@ public abstract class UML_Thing extends UML_Element {
 	public double getY() {
 		return this.yCoordinate; 
 	}
+	
+	public void setWidth(int w) {
+		this.width = w;
+	}
+	
+	public void setHeight(int h) {
+		this.height = h; 
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height; 
+	}
+	
 	
 	/**
 	 * The default constructor for a UML Thing
