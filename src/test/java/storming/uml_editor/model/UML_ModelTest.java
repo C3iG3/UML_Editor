@@ -29,6 +29,8 @@ class UML_ModelTest {
 	@Test
 	void testPut() {
 		UML_Model putModel = new UML_Model(null);
+
+		
 	}
 	
 	@Test
