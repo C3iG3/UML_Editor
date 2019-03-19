@@ -16,7 +16,7 @@ import storming.uml_editor.model.things.classbox.UML_ClassBox;
 
 class UML_ModelTest {
 	
-	/**
+	/*
 	 * Description: Testing newly constructed model. 
 	 */
 	@Test
@@ -27,7 +27,7 @@ class UML_ModelTest {
 		
 	}
 
-	/**
+	/*
 	 * Testing: put, get, size
 	 * Description: The goal is to verify that when elems are added to the model, we are able to retrieve those 
 	 * elements via it's respective Key. Keys (which are IDs for each elem) start at 0. 
@@ -76,7 +76,7 @@ class UML_ModelTest {
 		
 	}
 	
-	/**
+	/*
 	 * Testing: remove 
 	 * Description: There will be four elements in the model. After removing an element the model should keep it's integrity
 	 * with respect to the other elements. 
@@ -121,8 +121,35 @@ class UML_ModelTest {
 		
 	}
 	
+	//TODO 
+	/*
+	 * Test: classbox constructors 
+	 */
+	@Test
+	void testClassBoxCtor() {
+		
+	}
+	
+	/* 
+	 * Testing: getAttribute (and collection version), putAttribute, removeAttribute, hasAttributes, 
+	 * countAttributes, 
+	 * Description: 
+	 */
 	@Test
 	void testClassBoxAttrs() {
+		UML_Model m = new UML_Model(null);
+		
+		UML_ClassBox elemOne = new UML_ClassBox(); 
+		UML_ClassBox elemTwo = new UML_ClassBox(); 
+		UML_ClassBox elemThree = new UML_ClassBox(); 
+		UML_ClassBox elemFour = new UML_ClassBox(); 
+		
+		m.put(elemOne);
+		m.put(elemTwo);
+		m.put(elemThree);
+		m.put(elemFour);
+		
+		
 		
 	}
 	
