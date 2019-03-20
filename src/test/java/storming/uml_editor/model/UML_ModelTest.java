@@ -12,7 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import storming.uml_editor.controller.UML_Controller;
+import storming.uml_editor.model.things.classbox.UML_Attribute;
 import storming.uml_editor.model.things.classbox.UML_ClassBox;
+import storming.uml_editor.model.things.classbox.UML_Operation;
 
 class UML_ModelTest {
 	
@@ -78,6 +81,7 @@ class UML_ModelTest {
 	
 	/*
 	 * Testing: remove 
+	 * 
 	 * Description: There will be four elements in the model. After removing an element the model should keep it's integrity
 	 * with respect to the other elements. 
 	 */
@@ -123,7 +127,7 @@ class UML_ModelTest {
 	
 	//TODO 
 	/*
-	 * Test: classbox constructors 
+	 * Test: class box constructors 
 	 */
 	@Test
 	void testClassBoxCtor() {
@@ -132,11 +136,13 @@ class UML_ModelTest {
 	
 	/* 
 	 * Testing: getAttribute (and collection version), putAttribute, removeAttribute, hasAttributes, 
-	 * countAttributes, 
-	 * Description: 
+	 * countAttributes, putSignature, hasSignature, removeSignature. 
+	 * 
+	 * Description: There will be four class boxes each contain either an attribute or an operation. These
+	 * tests evaluate proper sets and gets for attributes. 
 	 */
 	@Test
-	void testClassBoxAttrs() {
+	void testClassBoxAttrsOp() {
 		UML_Model m = new UML_Model(null);
 		
 		UML_ClassBox elemOne = new UML_ClassBox(); 
@@ -148,6 +154,59 @@ class UML_ModelTest {
 		m.put(elemTwo);
 		m.put(elemThree);
 		m.put(elemFour);
+		
+		// Add and retrieve a class box attribute
+		UML_Attribute customerAttr = new UML_Attribute("ID", "int");
+		elemOne.putAttribute(customerAttr); 
+		assertTrue(elemOne.getAttribute(0).getName() == "ID", "First elem should have a key of 0 AND the name should be ID");
+		assertTrue(elemOne.getAttribute(0).getType() == "int", "First elem should have a key of 0 AND the type of int");
+		
+		// put name to replace current name
+		elemOne.getAttribute(0).putName("Loan Issued"); 
+		assertTrue(elemOne.getAttribute(0).getName() == "Loan Issued", "New attr name should be Loan Issued but"); 
+		elemOne.getAttribute(0).putType("boolean");
+		assertTrue(elemOne.getAttribute(0).getType() == "boolean", "new attr should be of type boolean"); 
+		
+		// Testing visibility + parameter 
+		UML_Attribute bookAttr = new UML_Attribute(null ,"ID", "int");
+		elemTwo.putAttribute(bookAttr);
+		
+		// first attr of this elem should still be 0
+		assertTrue(elemTwo.getAttribute(0) == bookAttr, "class box elem 0 should be bookAttr");
+		assertTrue(elemTwo.getAttribute(0).getVisibility() == null, "class box visibility should be null");
+		assertTrue(elemTwo.getAttribute(0).putVisibility(null) == null, "modifying visibility when already null should remain null");
+		
+		// counting attributes
+		assertTrue(elemOne.countAttributes() == 1, "elemOne class box should have only 1 atttribute");
+		elemOne.removeAttribute(0);
+		assertTrue(elemOne.countAttributes() == 0, "elemOne class box should have 0 attributes");
+		
+		UML_Operation customerOp = new UML_Operation();
+		elemThree.putOperation(customerOp);
+		assertTrue(elemThree.countOperations() == 1, "one operation should be in class box elemThree");
+		assertTrue(elemThree.getOperation(0) == customerOp, "first op in elemThree should be customerOp");
+		elemThree.getOperation(0).putSignature("bool addBool(bool)");
+		assertTrue(elemThree.getOperation(0).getSignature() == "bool addBool(bool)", "elemThree's first operation should have a signature of \'boolean\'");
+		assertTrue(elemThree.getOperation(0).hasSignature() == true, "elemThree should have a signature");
+		
+		UML_Operation bookOp = new UML_Operation('t', "int addBook(int, int)");
+		elemFour.putOperation(bookOp); 
+		
+		// remove signature 
+		assertFalse(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
+		
+		
+		//TODO need to add new code tests 
+		
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	void testControllerAndModel() {
+		UML_Controller cont = new UML_Controller(null);
+		UML_Model mod = new UML_Model(cont);
 		
 		
 		
