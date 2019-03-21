@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import storming.uml_editor.controller.UML_Controller;
+import storming.uml_editor.model.relationships.UML_Dependency;
+import storming.uml_editor.model.relationships.UML_Generalization;
+import storming.uml_editor.model.relationships.UML_Relationship;
+import storming.uml_editor.model.relationships.associations.UML_Association;
 import storming.uml_editor.model.things.classbox.UML_Attribute;
 import storming.uml_editor.model.things.classbox.UML_ClassBox;
 import storming.uml_editor.model.things.classbox.UML_Operation;
@@ -64,7 +68,7 @@ class UML_ModelTest {
 		assertTrue(E3 == elemThree, "Return value of E3 should be element three.");
 		assertTrue(E4 != elemThree, "Return value of E4 should not be element three.");
 		
-		// Verifying elements added to the model without the name parameter do not misbehave
+		// Verifying elements added to the model without the name parameter do not act improperly
 		putModel.put(elemFive);
 		putModel.put(elemSix);
 		
@@ -121,7 +125,6 @@ class UML_ModelTest {
 		UML_ClassBox elemFive = new UML_ClassBox("class box 5"); 
 		removeModel.put(elemFive);
 		assertTrue(removeModel.get(4) == elemFive, "The next key grabbed for element five should be 4");
-		
 		
 	}
 	
@@ -192,8 +195,9 @@ class UML_ModelTest {
 		UML_Operation bookOp = new UML_Operation('t', "int addBook(int, int)");
 		elemFour.putOperation(bookOp); 
 		
-		// remove signature 
-		assertFalse(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
+		// remove signature
+		
+		assertTrue(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
 		
 		
 		//TODO need to add new code tests 
@@ -201,14 +205,77 @@ class UML_ModelTest {
 	}
 	
 	/**
+	 * Testing: Relationships, dependency, generalization, relationship
+	 * Description:  
+	 * 
+	 */
+	@Test
+	void testRelationships() {
+		UML_ClassBox roalty = new UML_ClassBox("people");
+		
+		UML_ClassBox people = new UML_ClassBox("people");
+		
+		
+		UML_ClassBox romeo = new UML_ClassBox("Romeo"); 
+		UML_ClassBox juliet = new UML_ClassBox("Juliet");
+		
+		UML_Dependency d1 = new UML_Dependency("d1", romeo, juliet);
+		UML_Generalization g1 = new UML_Generalization("g1", romeo, people);
+		UML_Generalization g2 = new UML_Generalization("g2", juliet, people);
+		UML_Association a1 = new UML_Association("a1", romeo, juliet);
+		
+		assertTrue(d1.getSource() == romeo, "source of d1 should be romeo");
+		assertTrue(d1.getTarget() == juliet, "target of d1 should be juliet");
+		assertTrue(g1.getClass() == UML_Generalization.class, "class of g1 should be of type uml_generalizaion");
+		assertTrue(g1.hasName() == true, "g1 should have a name");
+		assertTrue(g2.hasSource() == true, "g2 should have a source");
+		assertTrue(a1.hasTarget() == true, "target of a1 should be true");
+		assertTrue(a1.putName("association1") == "association1", "name changed to association1");
+		assertTrue(a1.putSource(people) == people, "association change should result in people");
+		g1.putTarget(roalty);
+		g2.putTarget(roalty);
+		assertTrue(g1.getTarget() == roalty && g2.getTarget() == roalty, "updated generalization should refelct roalty");
+		 
+	}
+	
+	
+	/**
 	 * 
 	 */
 	@Test
 	void testControllerAndModel() {
 		UML_Controller cont = new UML_Controller(null);
-		UML_Model mod = new UML_Model(cont);
+		
+		// attributes
+		UML_Attribute age = new UML_Attribute("age", "int");
+		UML_Attribute id = new UML_Attribute("id", "int");
+		
+		// operations
+		UML_Operation buy = new UML_Operation('t', "bool buy(item)");
+		UML_Operation sell = new UML_Operation('t', "bool sell(item)");
 		
 		
+		//setting up a simple class box with attributes and operations 
+		UML_ClassBox customer = new UML_ClassBox("customer");
+		customer.putAttribute(age);
+		customer.putAttribute(id);
+		customer.putOperation(buy);
+		
+		//setting up a simple class box with attributes and operations 
+		UML_ClassBox employee = new UML_ClassBox("employee");
+		customer.putAttribute(age);
+		customer.putAttribute(id);
+		customer.putOperation(sell);
+		
+		// testing putting elements into the controller
+		var key = cont.put(customer);
+		var emp = cont.put(employee);
+		
+		assertTrue(cont.get(0, UML_ClassBox.class) == customer, "first element placed into model via controller is customer");
+		assertTrue(cont.get(1, UML_ClassBox.class) == employee, "second element placed into model via controller is employee");
+		
+		cont.remove(0);
+		assertTrue(cont.get(0, UML_ClassBox.class) == null, "customer should be removed from the model");	
 		
 	}
 	
