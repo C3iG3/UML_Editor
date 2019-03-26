@@ -178,7 +178,7 @@ public class UML_ModelTest {
 		assertTrue(elemThree.getOperation(0).hasSignature() == true, "elemThree should have a signature");
 		
 		// remove signature
-		UML_Operation bookOp = new UML_Operation('t', "int addBook(int, int)");
+		UML_Operation bookOp = new UML_Operation("t", "int addBook(int, int)");
 		elemFour.putOperation(bookOp);
 		assertTrue(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
 		
@@ -244,8 +244,8 @@ public class UML_ModelTest {
 		UML_Attribute id = new UML_Attribute("id", "int");
 		
 		// operations
-		UML_Operation buy = new UML_Operation('t', "bool buy(item)");
-		UML_Operation sell = new UML_Operation('t', "bool sell(item)");
+		UML_Operation buy = new UML_Operation("t", "bool buy(item)");
+		UML_Operation sell = new UML_Operation("t", "bool sell(item)");
 		
 		
 		//setting up a simple class box with attributes and operations 
