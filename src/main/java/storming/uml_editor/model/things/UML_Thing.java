@@ -115,23 +115,6 @@ public abstract class UML_Thing extends UML_Element {
 		return y.get();
 	}
 
-	public void setWidth(int w) {
-		this.width = w;
-	}
-
-	public void setHeight(int h) {
-		this.height = h;
-	}
-
-	public int getWidth() {
-		return this.width;
-	}
-
-	public int getHeight() {
-		return this.height;
-	}
-
-
 	/**
 	 * Sets the y-coordinate of a Thing
 	 *
