@@ -1,10 +1,13 @@
 package storming.uml_editor.model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * The most general UML element that is to be inherited by all other UML element types
  */
 public abstract class UML_Element {
-	protected String name = null;
+	protected StringProperty name = new SimpleStringProperty(null);
 	private Long key = null;
 	
 	/**
@@ -29,7 +32,7 @@ public abstract class UML_Element {
 	 * 	null otherwise
 	 */
 	public String getName() {
-		return name;
+		return name.get();
 	}
 	
 	/**
@@ -41,8 +44,8 @@ public abstract class UML_Element {
 	 * 	null otherwise
 	 */
 	public String putName(String name) {
-		var temp = this.name;
-		this.name = name;
+		var temp = this.name.get();
+		this.name.set(name);
 		return temp;
 	}
 	
@@ -66,7 +69,15 @@ public abstract class UML_Element {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasName() {
-		return name != null;
+		return getName() != null;
+	}
+	
+	/**
+	 * Returns the name as a JavaFX property
+	 * @return The name as a JavaFX property
+	 */
+	public StringProperty nameProperty() {
+		return name;
 	}
 	
 	/**
