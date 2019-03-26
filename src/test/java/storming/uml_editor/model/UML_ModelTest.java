@@ -20,7 +20,7 @@ import storming.uml_editor.model.things.classbox.UML_Attribute;
 import storming.uml_editor.model.things.classbox.UML_ClassBox;
 import storming.uml_editor.model.things.classbox.UML_Operation;
 
-class UML_ModelTest {
+public class UML_ModelTest {
 	
 	/**
 	 * Description: Testing newly constructed model. 
