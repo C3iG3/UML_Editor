@@ -1,5 +1,7 @@
 package storming.uml_editor.model.things;
 
+import javafx.beans.binding.DoubleBinding;
+
 /**
  * A class that represents a UML Structural Thing
  */
@@ -12,11 +14,46 @@ public abstract class UML_StructuralThing extends UML_Thing {
 	}
 	
 	/**
-	 * Constructs the structural thing with a name
+	 * Constructs the Structural Thing with a name
 	 * 
 	 * @param name The name for the structural thing
 	 */
 	protected UML_StructuralThing(String name) {
 		super(name);
 	}
+	
+	/**
+	 * Constructs the Structural Thing with coordinates and size properties
+	 * 
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @param width The width
+	 * @param height The height
+	 */
+	protected UML_StructuralThing(double x, 
+								  double y,
+								  double width,
+								  double height) {
+		super(x, y, width, height);
+	}
+	
+	/**
+	 * Constructs the Structural Thing with a name, coordinates, and size properties
+	 * 
+	 * @param name The name
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @param width The width
+	 * @param height The height
+	 */
+	protected UML_StructuralThing(String name, 
+						double x, 
+						double y,
+						double width,
+						double height) {
+		super(name, x, y, width, height);
+	}
+	
+	public abstract DoubleBinding centerXProperty();
+	public abstract DoubleBinding centerYProperty();
 }

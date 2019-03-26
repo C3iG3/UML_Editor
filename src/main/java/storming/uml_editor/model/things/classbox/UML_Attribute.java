@@ -1,11 +1,15 @@
 package storming.uml_editor.model.things.classbox;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * A class that represents a UML Attribute
  */
 public class UML_Attribute {
-	protected Character visibility = null;
-	protected String name = null, type = null;
+	protected StringProperty visibility = new SimpleStringProperty(null),
+							 name = new SimpleStringProperty(null), 
+							 type = new SimpleStringProperty(null);
 	
 	private Long key = null;
 	
@@ -40,7 +44,7 @@ public class UML_Attribute {
 	 * @param name The name for the attribute
 	 * @param type The type of the attribute
 	 */
-	public UML_Attribute(Character visibility, String name, String type) {
+	public UML_Attribute(String visibility, String name, String type) {
 		putVisibility(visibility);
 		putName(name);
 		putType(type);
@@ -53,8 +57,8 @@ public class UML_Attribute {
 	 *	The visibility of the attribute, if it has one;
 	 *	null otherwise
 	 */
-	public Character getVisibility() {
-		return visibility;
+	public String getVisibility() {
+		return visibility.get();
 	}
 	
 	/**
@@ -65,9 +69,9 @@ public class UML_Attribute {
 	 * 	The previous visibility, if it had one;
 	 * 	null otherwise
 	 */
-	public Character putVisibility(Character visibility) {
-		var temp = this.visibility;
-		this.visibility = visibility;
+	public String putVisibility(String visibility) {
+		var temp = this.visibility.get();
+		this.visibility.set(visibility);
 		return temp;
 	}
 	
@@ -78,7 +82,7 @@ public class UML_Attribute {
 	 * 	The removed visibility, if it had one;
 	 * 	null otherwise
 	 */
-	public Character removeVisibility() {
+	public String removeVisibility() {
 		return putVisibility(null);
 	}
 	
@@ -91,7 +95,15 @@ public class UML_Attribute {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasVisibility() {
-		return visibility != null;
+		return getVisibility() != null;
+	}
+	
+	/**
+	 * Returns the visibility as a JavaFX property
+	 * @return The visibility as a JavaFX property
+	 */
+	public StringProperty visibilityProperty() {
+		return visibility;
 	}
 	
 	/**
@@ -102,7 +114,7 @@ public class UML_Attribute {
 	 * 	null otherwise
 	 */
 	public String getName() {
-		return name;
+		return name.get();
 	}
 	
 	/**
@@ -114,8 +126,8 @@ public class UML_Attribute {
 	 * 	null otherwise
 	 */
 	public String putName(String name) {
-		var temp = this.name;
-		this.name = name;
+		var temp = this.name.get();
+		this.name.set(name);
 		return temp;
 	}
 	
@@ -139,7 +151,15 @@ public class UML_Attribute {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasName() {
-		return name != null;
+		return getName() != null;
+	}
+	
+	/**
+	 * Returns the name as a JavaFX property
+	 * @return The name as a JavaFX property
+	 */
+	public StringProperty nameProperty() {
+		return name;
 	}
 	
 	/**
@@ -150,7 +170,7 @@ public class UML_Attribute {
 	 * 	null otherwise
 	 */
 	public String getType() {
-		return type;
+		return type.get();
 	}
 	
 	/**
@@ -162,8 +182,8 @@ public class UML_Attribute {
 	 * 	null otherwise
 	 */
 	public String putType(String type) {
-		var temp = this.type;
-		this.type = type;
+		var temp = this.type.get();
+		this.type.set(type);
 		return temp;
 	}
 	
@@ -187,7 +207,15 @@ public class UML_Attribute {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasType() {
-		return type != null;
+		return getType() != null;
+	}
+	
+	/**
+	 * Returns the type as a JavaFX property
+	 * @return The type as a JavaFX property
+	 */
+	public StringProperty typeProperty() {
+		return type;
 	}
 	
 	/**

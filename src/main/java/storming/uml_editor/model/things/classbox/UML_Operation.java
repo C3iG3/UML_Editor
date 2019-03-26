@@ -1,11 +1,14 @@
 package storming.uml_editor.model.things.classbox;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * A class that represents a UML Operation
  */
 public class UML_Operation {
-	protected Character visibility = null;
-	protected String signature = null;
+	protected StringProperty visibility = new SimpleStringProperty(null),
+							 signature  = new SimpleStringProperty(null);
 	
 	private Long key = null;
 	
@@ -29,7 +32,7 @@ public class UML_Operation {
 	 * @param visibility The visibility of the operation
 	 * @param signature The signature of the operation
 	 */
-	public UML_Operation(Character visibility, String signature) {
+	public UML_Operation(String visibility, String signature) {
 		putVisibility(visibility);
 		putSignature(signature);
 	}
@@ -41,8 +44,8 @@ public class UML_Operation {
 	 *	The visibility of the operation, if it has one;
 	 *	null otherwise
 	 */
-	public Character getVisibility() {
-		return visibility;
+	public String getVisibility() {
+		return visibility.get();
 	}
 	
 	/**
@@ -53,9 +56,9 @@ public class UML_Operation {
 	 * 	The previous visibility, if it had one;
 	 * 	null otherwise
 	 */
-	public Character putVisibility(Character visibility) {
-		var temp = this.visibility;
-		this.visibility = visibility;
+	public String putVisibility(String visibility) {
+		var temp = getVisibility();
+		this.visibility.set(visibility);
 		return temp;
 	}
 	
@@ -66,7 +69,7 @@ public class UML_Operation {
 	 * 	The removed visibility, if there is one;
 	 * 	null otherwise
 	 */
-	public Character removeVisibility() {
+	public String removeVisibility() {
 		return putVisibility(null);
 	}
 	
@@ -79,7 +82,15 @@ public class UML_Operation {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasVisibility() {
-		return visibility != null;
+		return getVisibility() != null;
+	}
+	
+	/**
+	 * Returns the visibility as a JavaFX property
+	 * @return The visibility as a JavaFX property
+	 */
+	public StringProperty visibilityProperty() {
+		return visibility;
 	}
 	
 	/**
@@ -90,7 +101,7 @@ public class UML_Operation {
 	 * 	null otherwise
 	 */
 	public String getSignature() {
-		return signature;
+		return signature.get();
 	}
 	
 	/**
@@ -102,8 +113,8 @@ public class UML_Operation {
 	 * 	null otherwise
 	 */
 	public String putSignature(String signature) {
-		var temp = this.signature;
-		this.signature = signature;
+		var temp = getSignature();
+		this.signature.set(signature);
 		return temp;
 	}
 	
@@ -127,7 +138,15 @@ public class UML_Operation {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasSignature() {
-		return signature != null;
+		return getSignature() != null;
+	}
+	
+	/**
+	 * Returns the signature as a JavaFX property
+	 * @return The signature as a JavaFX property
+	 */
+	public StringProperty signatureProperty() {
+		return signature;
 	}
 	
 	/**

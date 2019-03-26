@@ -1,7 +1,11 @@
 package storming.uml_editor.model.things.classbox;
 
+import java.util.Collection;
 import java.util.HashMap;
 
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import storming.uml_editor.model.things.UML_StructuralThing;
 
 /**
@@ -10,7 +14,7 @@ import storming.uml_editor.model.things.UML_StructuralThing;
 public class UML_ClassBox extends UML_StructuralThing {
 	protected HashMap<Long, UML_Attribute> attributes = new HashMap<>();
 	protected HashMap<Long, UML_Operation> operations = new HashMap<>();
-	protected String extra = null;
+	protected StringProperty extra = new SimpleStringProperty(null);
 	
 	private long currKey = 0;
 
@@ -22,12 +26,44 @@ public class UML_ClassBox extends UML_StructuralThing {
 	}
 	
 	/**
-	 * Constructs the class box with a name
+	 * Constructs the Class Box with a name
 	 * 
-	 * @param name The name for the class box
+	 * @param name The name for the Class Box
 	 */
 	public UML_ClassBox(String name) {
 		super(name);
+	}
+	
+	/**
+	 * Constructs the Class Box with coordinates and size properties
+	 * 
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @param width The width
+	 * @param height The height
+	 */
+	public UML_ClassBox(double x, 
+						double y,
+						double width,
+						double height) {
+		super(x, y, width, height);
+	}
+	
+	/**
+	 * Constructs the Class Box with a name, coordinates, and size properties
+	 * 
+	 * @param name The name
+	 * @param x The x-coordinate
+	 * @param y The y-coordinate
+	 * @param width The width
+	 * @param height The height
+	 */
+	protected UML_ClassBox(String name, 
+						   double x, 
+						   double y,						
+						   double width,
+						   double height) {
+		super(name, x, y, width, height);
 	}
 
 	/**
@@ -40,6 +76,15 @@ public class UML_ClassBox extends UML_StructuralThing {
 	 */
 	public UML_Attribute getAttribute(long key) {
 		return attributes.get(key);
+	}
+	
+	/**
+	 * Gets a Collection of all this class box's attributes
+	 * 
+	 * @return A collection of attributes
+	 */
+	public Collection<UML_Attribute> getAttributes() {
+		return attributes.values();
 	}
 	
 	/**
@@ -99,6 +144,15 @@ public class UML_ClassBox extends UML_StructuralThing {
 	}
 	
 	/**
+	 * Gets a Collection of all this class box's operations
+	 * 
+	 * @return A collection of operations
+	 */
+	public Collection<UML_Operation> getOperations() {
+		return operations.values();
+	}
+	
+	/**
 	 * Puts an operation into this class box
 	 * 
 	 * @param op The operation to add
@@ -150,7 +204,7 @@ public class UML_ClassBox extends UML_StructuralThing {
 	 * 	null otherwise
 	 */
 	public String getExtra() {
-		return extra;
+		return extra.get();
 	}
 	
 	/**
@@ -162,8 +216,8 @@ public class UML_ClassBox extends UML_StructuralThing {
 	 * 	null otherwise
 	 */
 	public String putExtra(String extra) {
-		var temp = this.extra;
-		this.extra = extra;
+		var temp = this.extra.get();
+		this.extra.set(extra);
 		return temp;
 	}
 	
@@ -187,7 +241,23 @@ public class UML_ClassBox extends UML_StructuralThing {
 	 * 	FALSE otherwise
 	 */
 	public boolean hasExtra() {
-		return this.extra != null;
+		return getExtra() != null;
+	}
+	
+	/**
+	 * Returns the extra as a JavaFX property
+	 * @return The extra as a JavaFX property
+	 */
+	public StringProperty extraProperty() {
+		return extra;
+	}
+	
+	public DoubleBinding centerXProperty() {
+		return xProperty().add(widthProperty().divide(2));
+	}
+	
+	public DoubleBinding centerYProperty() {
+		return yProperty().add(heightProperty().divide(2));
 	}
 	
 	/**
