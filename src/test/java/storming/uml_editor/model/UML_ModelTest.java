@@ -102,22 +102,54 @@ public class UML_ModelTest {
 		removeModel.remove(1);
 		removeModel.remove(3);
 		
-		//TODO should be able to test the size.
-		
 		// new element added, new element key should not use historical keys. 
 		UML_ClassBox elemFive = new UML_ClassBox("class box 5"); 
 		removeModel.put(elemFive);
-		assertTrue(removeModel.get(4) == elemFive, "The next key grabbed for element five should be 4");
+		assertEquals(elemFive, removeModel.get(4), "The next key grabbed for element five should be 4");
 	}
 	
-	//TODO 
 	/**
 	 * Test: class box constructors 
+	 * 
+	 * Description: Verifying the class attributes name, x, y, width and height - generalized by the UML_Thing - are can be set via the
+	 * UML_ClassBox ctor and retrieved properly using UML_Thing methods. 
 	 */
 	@Test
 	void testClassBoxCtor() {
 		
+		// constructor parameters ( X,Y,Width, Height) 
+		UML_ClassBox elemOne = new UML_ClassBox(10.0, 15.0, 25.0, 20.0);
+		var height = elemOne.getHeight();
+		assertTrue(height == 20.0, "Height should be 20.0, a double but was:, " + height);
+		var width = elemOne.getWidth();
+		assertTrue(width == 25.0, "width should be 25.0, a double but was: " + width);
+		var x = elemOne.getX();
+		assertTrue(x == 10.0, "X should be 10.0, a double but was: " + x);
+		var y = elemOne.getY();
+		assertTrue(y == 15.0, "Y should be a 15.0, a double but was: " + y);
+		
 	}
+	
+	/**
+	 * Testing: class box setters
+	 * 
+	 * Description: The purpose of these test cases is to verify the generalized UML_Thing super getters and setters 
+	 * work with the generalized class box. Each parameter has it's own test case. 
+	 */
+	@Test
+	void testClassBoxSG() {
+		UML_ClassBox elemOne = new UML_ClassBox(10.0, 15.0, 25.0, 20.0);
+		elemOne.setHeight(5.0);
+		assertEquals(elemOne.getHeight(), 5.0, "Expected height to be 5.0, but was: " + elemOne.getHeight());
+		elemOne.setWidth(5.0);
+		assertEquals(elemOne.getWidth(), 5.0, "Expected width to be 5.0, but was: " + elemOne.getWidth());
+		elemOne.setX(5.0);
+		assertEquals(elemOne.getX(), 5.0, "Expected X to be 5.0, but was: " + elemOne.getX());
+		elemOne.setY(5.0);
+		assertEquals(elemOne.getY(), 5.0, "Expected Y to be 5.0, but was: " + elemOne.getY());
+		
+	}
+	
 	
 	/** 
 	 * Testing: getAttribute (and collection version), putAttribute, removeAttribute, hasAttributes, 
@@ -143,34 +175,34 @@ public class UML_ModelTest {
 		// Add and retrieve a class box attribute
 		UML_Attribute customerAttr = new UML_Attribute("ID", "int");
 		elemOne.putAttribute(customerAttr); 
-		assertTrue(elemOne.getAttribute(0).getName() == "ID", "First elem should have a key of 0 AND the name should be ID");
-		assertTrue(elemOne.getAttribute(0).getType() == "int", "First elem should have a key of 0 AND the type of int");
+		assertEquals("ID", elemOne.getAttribute(0).getName(), "First elem should have a key of 0 AND the name should be ID");
+		assertEquals("int", elemOne.getAttribute(0).getType(), "First elem should have a key of 0 AND the type of int");
 		
 		// put name to replace current name
 		elemOne.getAttribute(0).putName("Loan Issued"); 
-		assertTrue(elemOne.getAttribute(0).getName() == "Loan Issued", "New attr name should be Loan Issued but"); 
+		assertEquals("Loan Issued", elemOne.getAttribute(0).getName(), "New attr name should be Loan Issued but"); 
 		elemOne.getAttribute(0).putType("boolean");
-		assertTrue(elemOne.getAttribute(0).getType() == "boolean", "new attr should be of type boolean"); 
-		
+		assertEquals( "boolean",elemOne.getAttribute(0).getType(), "new attr should be of type boolean"); 
+		 
 		// Testing visibility + parameter 
 		UML_Attribute bookAttr = new UML_Attribute(null ,"ID", "int");
 		elemTwo.putAttribute(bookAttr);
 		
 		// first attribute of this element should still be 0
-		assertTrue(elemTwo.getAttribute(0) == bookAttr, "class box elem 0 should be bookAttr");
+		assertEquals(bookAttr ,elemTwo.getAttribute(0), "class box elem 0 should be bookAttr");
 		assertTrue(elemTwo.getAttribute(0).getVisibility() == null, "class box visibility should be null");
 		assertTrue(elemTwo.getAttribute(0).putVisibility(null) == null, "modifying visibility when already null should remain null");
 		
 		// counting attributes
-		assertTrue(elemOne.countAttributes() == 1, "elemOne class box should have only 1 atttribute");
+		assertEquals(1, elemOne.countAttributes(), "elemOne class box should have only 1 atttribute");
 		elemOne.removeAttribute(0);
-		assertTrue(elemOne.countAttributes() == 0, "elemOne class box should have 0 attributes");
+		assertEquals(0, elemOne.countAttributes(), "elemOne class box should have 0 attributes");
 		
 		// count operations
 		UML_Operation customerOp = new UML_Operation();
 		elemThree.putOperation(customerOp);
-		assertTrue(elemThree.countOperations() == 1, "one operation should be in class box elemThree");
-		assertTrue(elemThree.getOperation(0) == customerOp, "first op in elemThree should be customerOp");
+		assertEquals(1, elemThree.countOperations(), "one operation should be in class box elemThree");
+		assertEquals(customerOp, elemThree.getOperation(0), "first op in elemThree should be customerOp");
 		
 		// verifying signatures
 		elemThree.getOperation(0).putSignature("bool addBool(bool)");
@@ -183,15 +215,13 @@ public class UML_ModelTest {
 		assertTrue(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
 		
 		
-		//TODO need to add new code tests 
-		
 	}
 	
 	/**
 	 * Testing: Relationships, dependency, generalization, relationship
+	 * 
 	 * Description: creation of a small model tested and modified to verify robustness of relationships between class box 
 	 * objects
-	 * 
 	 */
 	@Test
 	void testRelationships() {
@@ -233,7 +263,9 @@ public class UML_ModelTest {
 	
 	
 	/**
+	 * Testing: 
 	 * 
+	 * Description:
 	 */
 	@Test
 	void testControllerAndModel() {
