@@ -23,7 +23,7 @@ import storming.uml_editor.model.things.classbox.UML_Operation;
 public class UML_ModelTest {
 	
 	/**
-	 * Description: Testing newly constructed model. 
+	 * Description: Testing newly constructed model.
 	 */
 	@Test
 	void testUML_Model() {
@@ -48,30 +48,30 @@ public class UML_ModelTest {
 		UML_ClassBox elemThree = new UML_ClassBox("class box 3"); 
 		UML_ClassBox elemFour = new UML_ClassBox("class box 4");
 		
-		// testing one element 
+		// testing return of what should be the first element, indexed at 0 <start of the keys> 
 		putModel.put(elemOne);
-		assertTrue(putModel.get(0) == elemOne, "The first element.");
+		assertEquals(elemOne, putModel.get(0));
 		
 		// testing collisions and overwrites with two elements
 		putModel.put(elemTwo);
-		assertTrue(putModel.get(1) == elemTwo, "The second elem is key two.");
+		assertEquals(elemTwo, putModel.get(1));
 		assertTrue(putModel.get(1) != elemOne && putModel.get(0) != elemTwo, "The first elem should not be obtained with the second elem's key.");
 		
 		// Testing return value of the put method
 		var E3 = putModel.put(elemThree);
 		var E4 = putModel.put(elemFour);
-		assertTrue(E3 == elemThree, "Return value of E3 should be element three.");
-		assertTrue(E4 != elemThree, "Return value of E4 should not be element three.");
+		assertEquals(E3, elemThree, "Return value of E3 should be element three.");
+		assertNotEquals(E4, elemThree, "E4 should not be elemThree");
 		
 		// Invalid element request
 		assertTrue(putModel.get(10) == null, "There should be no element indexed at 9.");
 		
-		//TODO Add tests about model size	
+		
 	}
 	
 	/**
 	 * Testing: remove
-	 * Description: Utilizing class boxes 
+	 * Description: Utilizing class boxes
 	 */
 	@Test
 	void testRemove() {
@@ -89,10 +89,10 @@ public class UML_ModelTest {
 		
 		// testing middle edge case - integrity of model should remain with respect to Key:Values/.
 		removeModel.remove(2);
-		assertTrue(removeModel.get(2) == null, "There should be no more instance of <key:value> 2:elemThree.");
-		assertTrue(removeModel.get(0) == elemOne , "Structure of other keys should remain");
-		assertTrue(removeModel.get(1) == elemTwo , "Structure of other keys should remain");
-		assertTrue(removeModel.get(3) == elemFour , "Structure of other keys should remain");
+		assertEquals(null ,removeModel.get(2), "There should be no more instance of <key:value> 2:elemThree.");
+		assertEquals(elemOne, removeModel.get(0), "Structure of other keys should remain");
+		assertEquals(elemTwo ,removeModel.get(1), "Structure of other keys should remain");
+		assertEquals(elemFour ,removeModel.get(3), "Structure of other keys should remain");
 		
 		// testing null object
 		removeModel.remove(0);
