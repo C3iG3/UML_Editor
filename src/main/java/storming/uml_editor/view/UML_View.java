@@ -76,23 +76,37 @@ public class UML_View extends Application {
 	@FXML
 	private Pane items;
 	
+	/*
+	 * UML_View contains a 'main' to make certain parts of connecting with JavaFX
+	 * 	easier. Additionally, with no other previous setup needed, and since the view
+	 * 	is the place where every user begins, it makes sense that it could handle 'main'
+	 */
 	public static void main(String[] args) {
     	launch(args);
     }
 	
+	/**
+	 * Constructs a UML_View. This view will automatically attach to a controller
+	 */
 	public UML_View() {
 		this.controller = new UML_Controller(this);
 	}
 	
+	/**
+	 * An entry point for JavaFX
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-//		Parent root = ;
-		
 		primaryStage.setTitle("Storming UML Editor");
 		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/try.fxml"))));
 		primaryStage.show();
 	}
 		
+	/**
+	 * A function utilized by JavaFX that will put a Class Box on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putClassBox(MouseEvent event) {
 		double width = 150;
@@ -104,40 +118,77 @@ public class UML_View extends Application {
 		drawer.draw(controller.put(new UML_ClassBox(x, y, width, height)));
 	}
 	
-//	DESIGN see how we start at the leaves and then call the more general functions, we bubble up then trickle down
-	
+	/**
+	 * A function utilized by JavaFX that will put a Dependency on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putDependency(MouseEvent event) {		
 		putRelationship(new UML_Dependency());	
 	}
 	
+	/**
+	 * A function utilized by JavaFX that will put a Generalization on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putGeneralization(MouseEvent event) {
 		putRelationship(new UML_Generalization());	
 	}
 	
+	/**
+	 * A function utilized by JavaFX that will put an Aggregation on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putAggregation(MouseEvent event) {
 		putRelationship(new UML_Aggregation());	
 	}
 	
+	/**
+	 * A function utilized by JavaFX that will put an Association on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putAssociation(MouseEvent event) {
 		putRelationship(new UML_Association());	
 	}
 	
+	/**
+	 * A function utilized by JavaFX that will put a Composition on the screen
+	 * 
+	 * @param event The MouseEvent that triggered this function
+	 */
 	@FXML
 	private void putComposition(MouseEvent event) {
 		putRelationship(new UML_Composition());	
 	}
 	
+	/**
+	 * A function utilized by JavaFX that will zoom in on the UML Elements
+	 * 
+	 * @param event The ZoomEvent that triggered this function
+	 */
 	@FXML
 	private void zoom(ZoomEvent event) {
 		items.setScaleX(items.getScaleX() * event.getZoomFactor());
 		items.setScaleY(items.getScaleY() * event.getZoomFactor());
 	}
 	
-//	It currently is a bug to not click on two class boxes when drawing a rel
+	/**
+	 * A helper utilized for putting a Relationship on the screen. This handles
+	 * 	setting up an EventFilter to catch which Class Boxes were clicked
+	 * 
+	 * ** BUG ** if the user clicks on something not a classbox this will fail due to
+	 * 	a null pointer exception. This has to do with the 'while' loop that finds the
+	 * 	StackPane parent
+	 * 
+	 * @param rel The relationship that is having its source and target set
+	 */
 	private void putRelationship(UML_Relationship rel) {
 		// A lambda cannot be used because we need the "this" context
 		items.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -160,6 +211,14 @@ public class UML_View extends Application {
 		});	
 	}
 	
+	/**
+	 * Unfocuses a previously focused element via a callback so that
+	 * 	a new element can be put in focus
+	 * 
+	 * @param onUnfocus 
+	 * 	A callback to be called that will unfocus an element the next time
+	 * 	'focus' is called
+	 */
 	private void focus(Runnable onUnfocus) {
 		if (this.onUnfocus != null)
 			this.onUnfocus.run();
@@ -167,7 +226,22 @@ public class UML_View extends Application {
 		this.onUnfocus = onUnfocus;
 	}
 	
+	/**
+	 * A helper class that handles drawing of all UML Elements. This class
+	 * 	should be used as a SINGLETON, but due to Java conventions, this
+	 * 	design is not possible. If multiple instances of this class are made
+	 * 	and used it will act as if only one were made (albeit it would not
+	 * 	make sense while multiple instances were made so that practice should
+	 * 	be avoided)
+	 */
 	private class Drawer {		
+		/**
+		 * Draws a UML_Element to the screen
+		 * 
+		 * @param elem 
+		 * 	The element (and more importantly, its properties)
+		 * 	that should be drawn
+		 */
 		public void draw(UML_Element elem) {
 			if (lookup(elem) != null)
 				delete(elem);
@@ -201,19 +275,47 @@ public class UML_View extends Application {
 				n.toBack();
 		}
 		
+		/**
+		 * Returns the JavaFX node that represents a UML_Element
+		 * 
+		 * @param elem The UML_Element to find in the view
+		 * @return The JavaFX Node that represents the given UML_Element
+		 */
 		private Node lookup(UML_Element elem) {
 			return items.lookup('#' + elem.getKey().toString());
 		}
 		
+		/**
+		 * Adds a Node to the screen
+		 * 
+		 * @param n The Node to add
+		 */
 		private void add(Node n) {
 			items.getChildren().add(n);
 		}
 		
-		// Lines are not deleted when a classbox is deleted
+		/**
+		 * Deletes the JavaFX node from the screen that represents 
+		 * 	a UML_Element
+		 * 
+		 * @param elem The UML_Element that is displayed in the view
+		 * 
+		 * ** BUG ** Lines connected to classboxes are not deleted when
+		 * 	the classbox is deleted. This should be fixed by adding an
+		 * 	ArrayList<UML_Relationship> to UML_ClassBox and iterating
+		 * 	through the list to delete relationships
+		 */
 		private void delete(UML_Element elem) {
 			items.getChildren().remove(lookup(elem));
 		}
 		
+		/**
+		 * Makes a StackPane containing all the components and 
+		 * 	bindings needed to represent the given UML_ClassBox
+		 * 
+		 * @param cbox The UML_ClassBox to represent
+		 * @return A StackPane that represents a Class Box
+		 */
 		private StackPane make(UML_ClassBox cbox) {
 			var content = new VBox();
 			
@@ -345,6 +447,13 @@ public class UML_View extends Application {
 			return box;
 		}
 		
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Dependency
+		 * 
+		 * @param dep The UML_Dependency to represent
+		 * @return A Group that represents a Dependency
+		 */
 		private Group make(UML_Dependency dep) {
 			var rel = make((UML_Relationship) dep);
 			rel.getStyleClass().add("dependency");
@@ -352,6 +461,13 @@ public class UML_View extends Application {
 			return rel;
 		}
 		
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Generalization
+		 * 
+		 * @param gen The UML_Generalization to represent
+		 * @return A Group that represents a Generalization
+		 */
 		private Group make(UML_Generalization gen) {
 			var rel = make((UML_Relationship) gen);
 			rel.getStyleClass().add("generalization");
@@ -359,27 +475,55 @@ public class UML_View extends Application {
 			return rel;
 		}
 		
-		private Group make(UML_Aggregation gen) {
-			var rel = make((UML_Relationship) gen);
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Aggregation
+		 * 
+		 * @param agg The UML_Aggregation to represent
+		 * @return A Group that represents a Aggregation
+		 */
+		private Group make(UML_Aggregation agg) {
+			var rel = make((UML_Relationship) agg);
 			rel.getStyleClass().add("aggregation");
 			
 			return rel;
 		}
 		
-		private Group make(UML_Association gen) {
-			var rel = make((UML_Relationship) gen);
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Association
+		 * 
+		 * @param assoc The UML_Association to represent
+		 * @return A Group that represents a Association
+		 */
+		private Group make(UML_Association assoc) {
+			var rel = make((UML_Relationship) assoc);
 			rel.getStyleClass().add("association");
 			
 			return rel;
 		}
 		
-		private Group make(UML_Composition gen) {
-			var rel = make((UML_Relationship) gen);
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Composition
+		 * 
+		 * @param comp The UML_Composition to represent
+		 * @return A Group that represents a Composition
+		 */
+		private Group make(UML_Composition comp) {
+			var rel = make((UML_Relationship) comp);
 			rel.getStyleClass().add("composition");
 			
 			return rel;
 		}
 		
+		/**
+		 * Makes a Group containing all the components and 
+		 * 	bindings needed to represent the given UML_Relationship
+		 * 
+		 * @param rel The UML_Relationship to represent
+		 * @return A Group that represents a Relationship
+		 */
 		private Group make(UML_Relationship rel) {
 			var l = new Line(rel.getSource().getX(),
 			 		 rel.getSource().getY(),
@@ -425,19 +569,47 @@ public class UML_View extends Application {
 		}
 	}
 	
+	/**
+	 * A helper class that handles interaction with a UML Element inspector.
+	 * 	Unlike the Drawer class, there may be instances where multiple
+	 * 	instances of an Inspector could be useful.
+	 */
 	private class Inspector {	
+		/**
+		 * Clears all the children from the inspector
+		 */
 		private void clear() {
 			inspector.getChildren().clear();
 		}
 		
+		/**
+		 * Creates a node containing a label of the given text
+		 * 
+		 * @param text The text to be in the label
+		 * @return A Node representing the label
+		 */
 		private Node label(String text) {
 			return new Label(text);
 		}
 		
+		/**
+		 * Creates a node containing a label of the given text
+		 * 	that should be treated as the title of the inspector
+		 * 
+		 * @param text The text of the title
+		 * @return A Node representing the title
+		 */
 		private Node title(String text) {
 			return label(text);
 		}
 		
+		/**
+		 * Creates a node that contains an editable field
+		 * 	that will change the name of a UML_Element
+		 * 
+		 * @param elem The UML_Element whose name is paired with this field
+		 * @return A Node representing the field
+		 */
 		private Node name(UML_Element elem) {			
 			var name = new TextField(elem.getName());
 			name.setOnKeyTyped((e) -> {
@@ -446,6 +618,13 @@ public class UML_View extends Application {
 			return name;
 		}
 		
+		/**
+		 * Creates a node that is a button that will delete
+		 * 	the given UML_Element
+		 * 
+		 * @param elem The UML_Element to delete
+		 * @return A Node representing the delete button
+		 */
 		private Node delete(UML_Element elem) {
 			return button("Delete", (e) -> {
 				controller.remove(elem.getKey());
@@ -455,7 +634,14 @@ public class UML_View extends Application {
 			});
 		}
 		
-//		Probably could make these return types more specific haha
+		/**
+		 * Creates a button with the name of the given text that carries
+		 * 	out a given action when clicked
+		 * 
+		 * @param text The text to display in the button
+		 * @param onAction The action to carry out when the button is clicked
+		 * @return A Node representing the button
+		 */
 		private Node button(String text, EventHandler<ActionEvent> onAction) {
 			var button = new Button(text);
 			button.setOnAction(onAction);
@@ -463,11 +649,21 @@ public class UML_View extends Application {
 			return button;
 		}
 		
-		
+		/**
+		 * Adds a Node to the inspector
+		 * 
+		 * @param n The Node to add
+		 */
 		private void addComponent(Node n) {
 			inspector.getChildren().add(n);
 		}
 		
+		/**
+		 * Update the inspector to show and be able to modify the values
+		 * 	of the given Class Box
+		 * 
+		 * @param cbox The Class Box to pair with the inspector
+		 */
 		public void update(UML_ClassBox cbox) {
 			clear();
 			
@@ -568,10 +764,16 @@ public class UML_View extends Application {
 			inspector.getChildren().addAll(extra_label, extra);
 		}
 		
-		public void update(UML_Relationship dep) {
+		/**
+		 * Update the inspector to show and be able to modify the values
+		 * 	of the given Relationship
+		 * 
+		 * @param dep The Relationship to pair with the inspector
+		 */
+		public void update(UML_Relationship rel) {
 			clear();
-			addComponent(delete(dep));
-			addComponent(name(dep));
+			addComponent(delete(rel));
+			addComponent(name(rel));
 		}
 	}
 }
