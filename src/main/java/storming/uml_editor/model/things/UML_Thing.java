@@ -102,6 +102,10 @@ public abstract class UML_Thing extends UML_Element {
 		return x;
 	}
 
+	/**
+	 * Returns the center x-coordinate as a JavaFX property
+	 * @return The center x-coordinate as a JavaFX property
+	 */
 	public abstract DoubleBinding centerXProperty();
 
 	/**
@@ -137,6 +141,10 @@ public abstract class UML_Thing extends UML_Element {
 		return y;
 	}
 
+	/**
+	 * Returns the center y-coordinate as a JavaFX property
+	 * @return The center y-coordinate as a JavaFX property
+	 */
 	public abstract DoubleBinding centerYProperty();
 
 	/**

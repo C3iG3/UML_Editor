@@ -54,6 +54,15 @@ public abstract class UML_StructuralThing extends UML_Thing {
 		super(name, x, y, width, height);
 	}
 	
+	/**
+	 * Returns the center x-coordinate as a JavaFX property
+	 * @return The center x-coordinate as a JavaFX property
+	 */
 	public abstract DoubleBinding centerXProperty();
+	
+	/**
+	 * Returns the center y-coordinate as a JavaFX property
+	 * @return The center y-coordinate as a JavaFX property
+	 */
 	public abstract DoubleBinding centerYProperty();
 }

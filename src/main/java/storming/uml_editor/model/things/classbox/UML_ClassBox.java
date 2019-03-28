@@ -252,10 +252,18 @@ public class UML_ClassBox extends UML_StructuralThing {
 		return extra;
 	}
 	
+	/**
+	 * Returns the center x-coordinate as a JavaFX property
+	 * @return The center x-coordinate as a JavaFX property
+	 */
 	public DoubleBinding centerXProperty() {
 		return xProperty().add(widthProperty().divide(2));
 	}
 	
+	/**
+	 * Returns the center y-coordinate as a JavaFX property
+	 * @return The center y-coordinate as a JavaFX property
+	 */
 	public DoubleBinding centerYProperty() {
 		return yProperty().add(heightProperty().divide(2));
 	}
