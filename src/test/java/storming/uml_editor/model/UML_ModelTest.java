@@ -65,13 +65,12 @@ public class UML_ModelTest {
 		
 		// Invalid element request
 		assertTrue(putModel.get(10) == null, "There should be no element indexed at 9.");
-		
-		
 	}
 	
 	/**
 	 * Testing: remove
-	 * Description: Utilizing class boxes
+	 * 
+	 * Description: Utilizing class boxes to test the robustness of the remove method. 
 	 */
 	@Test
 	void testRemove() {
@@ -127,7 +126,6 @@ public class UML_ModelTest {
 		assertTrue(x == 10.0, "X should be 10.0, a double but was: " + x);
 		var y = elemOne.getY();
 		assertTrue(y == 15.0, "Y should be a 15.0, a double but was: " + y);
-		
 	}
 	
 	/**
@@ -146,8 +144,7 @@ public class UML_ModelTest {
 		elemOne.setX(5.0);
 		assertEquals(elemOne.getX(), 5.0, "Expected X to be 5.0, but was: " + elemOne.getX());
 		elemOne.setY(5.0);
-		assertEquals(elemOne.getY(), 5.0, "Expected Y to be 5.0, but was: " + elemOne.getY());
-		
+		assertEquals(elemOne.getY(), 5.0, "Expected Y to be 5.0, but was: " + elemOne.getY());	
 	}
 	
 	
@@ -212,9 +209,7 @@ public class UML_ModelTest {
 		// remove signature
 		UML_Operation bookOp = new UML_Operation("t", "int addBook(int, int)");
 		elemFour.putOperation(bookOp);
-		assertTrue(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");
-		
-		
+		assertTrue(elemFour.getOperation(0).removeSignature() != null, "elemFour's remove operation method should return old signature");	
 	}
 	
 	/**
@@ -240,32 +235,34 @@ public class UML_ModelTest {
 		UML_Association a1 = new UML_Association("a1", romeo, juliet);
 		
 		// verify sources and targets methods
-		assertTrue(d1.getSource() == romeo, "source of d1 should be romeo");
-		assertTrue(d1.getTarget() == juliet, "target of d1 should be juliet");
+		assertEquals(romeo ,d1.getSource(), "Source of d1 should be:" + romeo + "but got: " + d1.getSource());
+		assertEquals(juliet ,d1.getTarget(), "Target of d1 should be: " + juliet + " but got: " + d1.getSource());
 		
-		// verifying class, name and boolen src. and targ. methods
-		assertTrue(g1.getClass() == UML_Generalization.class, "class of g1 should be of type uml_generalizaion");
-		assertTrue(g1.hasName() == true, "g1 should have a name");
-		assertTrue(g2.hasSource() == true, "g2 should have a source");
-		assertTrue(a1.hasTarget() == true, "target of a1 should be true");
+		// verifying class, name and boolean source and target. methods
+		assertEquals(UML_Generalization.class ,g1.getClass(), "class of g1 should be of type uml_generalizaion but was: " + g1.getClass());
+		assertTrue(g1.hasName(), "g1 should have a name");
+		assertTrue(g2.hasSource(), "g2 should have a source");
+		assertTrue(a1.hasTarget(), "target of a1 should be true");
 		
 		// robustness testing of UML_Relationship functions applied to sub-class relationships. 
-		assertTrue(a1.putName("association1") == "a1", "previous name should be returned with update");
-		assertTrue(a1.getName() == "association1", "name updated");
-		assertTrue(a1.putSource(people) == romeo, "should return previous source romeo");
-		assertTrue(a1.getSource() == people, "should return new source people");
+		assertEquals( "a1", a1.putName("association1"), "previous name should be returned with update");
+		assertEquals("association1" ,a1.getName(), "name should be updated, but was: " + a1.getName());
+		assertEquals( romeo ,a1.putSource(people), "should return previous source romeo");
+		assertEquals(people ,a1.getSource(), "should return new source people");
 		
 		// testing relationship modifications
 		g1.putTarget(roalty);
 		g2.putTarget(roalty);
-		assertTrue(g1.getTarget() == roalty && g2.getTarget() == roalty, "updated generalization should refelct roalty"); 
+		assertEquals(roalty, g1.getTarget(), "updated generalization should refelct roalty"); 
+		assertEquals(roalty, g2.getTarget(), "updated generalization should refelct roalty"); 
 	}
 	
 	
 	/**
-	 * Testing: 
+	 * Testing: controller, model
 	 * 
-	 * Description:
+	 * Description: Verifying the integration of the controller and model using a simple model that contains a few class boxes,
+	 * each with a few attributes and operations. 
 	 */
 	@Test
 	void testControllerAndModel() {
@@ -295,12 +292,12 @@ public class UML_ModelTest {
 		// testing putting elements into the controller
 		cont.put(customer);
 		cont.put(employee);
-		assertTrue(cont.get(0, UML_ClassBox.class) == customer, "first element placed into model via controller is customer");
-		assertTrue(cont.get(1, UML_ClassBox.class) == employee, "second element placed into model via controller is employee");
+		assertEquals(customer ,cont.get(0, UML_ClassBox.class), "first element placed into model via controller should be: " + customer + " but was: " + cont.get(0, UML_ClassBox.class) );
+		assertEquals(employee, cont.get(1, UML_ClassBox.class), "second element placed into model via controller should be employee: " + employee +  "but was: " + cont.get(1, UML_ClassBox.class));
 		
 		// testing controller removal of an element
 		cont.remove(0);
-		assertTrue(cont.get(0, UML_ClassBox.class) == null, "customer should be removed from the model");	
+		assertEquals(null, cont.get(0, UML_ClassBox.class), "customer should be removed from the model");	
 		
 	}
 }
