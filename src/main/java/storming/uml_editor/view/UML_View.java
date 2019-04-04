@@ -99,6 +99,8 @@ public class UML_View extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Storming UML Editor");
 		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/try.fxml"))));
+		// adding styling to resources folder under >src
+		primaryStage.getScene().getStylesheets().add(getClass().getResource("/storming_in_style.css").toExternalForm());
 		primaryStage.show();
 	}
 		
