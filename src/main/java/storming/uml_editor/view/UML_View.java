@@ -462,6 +462,7 @@ public class UML_View extends Application {
 		private Group make(UML_Dependency dep) {
 			var rel = make((UML_Relationship) dep);
 			rel.getStyleClass().add("dependency");
+			
 		
 			
 			return rel;

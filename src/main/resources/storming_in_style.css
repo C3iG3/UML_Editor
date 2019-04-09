@@ -1,15 +1,20 @@
 
 
 .classbox {
+	-fx-background-color: green;
+    -fx-padding: 10;
 
 
 }
 
 
 .dependency {
+	-fx-background-color: red;
     -fx-stroke-dash-array: 15 5 5 10;
  	-fx-fill: BLUE;
  	-fx-stroke-width: 10;
+ 	-fx-padding: 10;
+ 	-fx-view-order: 1;
 
 }
 
