@@ -99,8 +99,11 @@ public class UML_View extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Storming UML Editor");
 		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/try.fxml"))));
-		// adding styling to resources folder under >src
-		primaryStage.getScene().getStylesheets().add(getClass().getResource("/storming_in_style.css").toExternalForm());
+		
+		Scene scene = primaryStage.getScene();
+		scene.getStylesheets().add(getClass().getResource("/storming_in_style.css").toExternalForm());
+		
+		//primaryStage.getScene().getStylesheets().add("/storming_in_style.css");
 		primaryStage.show();
 	}
 		
@@ -459,6 +462,7 @@ public class UML_View extends Application {
 		private Group make(UML_Dependency dep) {
 			var rel = make((UML_Relationship) dep);
 			rel.getStyleClass().add("dependency");
+		
 			
 			return rel;
 		}

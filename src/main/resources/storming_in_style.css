@@ -2,18 +2,24 @@
 
 .classbox {
 
+
 }
 
 
 .dependency {
+    -fx-stroke-dash-array: 15 5 5 10;
+ 	-fx-fill: BLUE;
+ 	-fx-stroke-width: 10;
 
 }
 
 .generalization {
 
+
 }
 
 .aggregation {
+
 
 }
 
