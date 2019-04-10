@@ -1,20 +1,17 @@
 
 
 .classbox {
-	-fx-background-color: green;
-    -fx-padding: 10;
+	-fx-background-color: seashell;
 
 
 }
 
 
 .dependency {
-	-fx-background-color: red;
-    -fx-stroke-dash-array: 15 5 5 10;
- 	-fx-fill: BLUE;
- 	-fx-stroke-width: 10;
- 	-fx-padding: 10;
- 	-fx-view-order: 1;
+	-fx-stroke-width: 5;
+    -fx-stroke: slategrey;
+ 	-fx-stroke-dash-array: 10;
+ 	
 
 }
 

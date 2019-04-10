@@ -324,6 +324,9 @@ public class UML_View extends Application {
 		private StackPane make(UML_ClassBox cbox) {
 			var content = new VBox();
 			
+			// If you put the styling at the end, the rest of the code blocks the css from coming through
+			content.getStyleClass().add("classbox");
+			
 			var name = new Text(cbox.getName());
 			name.wrappingWidthProperty().bind(cbox.widthProperty());
 			name.textProperty().bind(cbox.nameProperty());
@@ -443,7 +446,6 @@ public class UML_View extends Application {
 				e.consume();
 			});
 			
-			box.getStyleClass().add("classbox");
 			
 			focus(() -> {
 				r.setStroke(Color.BLACK);
@@ -460,8 +462,8 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Dependency
 		 */
 		private Group make(UML_Dependency dep) {
-			var rel = make((UML_Relationship) dep);
-			rel.getStyleClass().add("dependency");
+			var rel = make((UML_Relationship) dep, "dependency");
+			//rel.getStyleClass().add("dependency");
 			
 		
 			
@@ -476,8 +478,9 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Generalization
 		 */
 		private Group make(UML_Generalization gen) {
-			var rel = make((UML_Relationship) gen);
-			rel.getStyleClass().add("generalization");
+			var rel = make((UML_Relationship) gen, "generalization");
+			//rel.getStyleClass().add("generalization");
+
 			
 			return rel;
 		}
@@ -490,8 +493,8 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Aggregation
 		 */
 		private Group make(UML_Aggregation agg) {
-			var rel = make((UML_Relationship) agg);
-			rel.getStyleClass().add("aggregation");
+			var rel = make((UML_Relationship) agg, "aggregation");
+			//rel.getStyleClass().add("aggregation");
 			
 			return rel;
 		}
@@ -504,8 +507,8 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Association
 		 */
 		private Group make(UML_Association assoc) {
-			var rel = make((UML_Relationship) assoc);
-			rel.getStyleClass().add("association");
+			var rel = make((UML_Relationship) assoc, "association");
+			//rel.getStyleClass().add("association");
 			
 			return rel;
 		}
@@ -518,8 +521,8 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Composition
 		 */
 		private Group make(UML_Composition comp) {
-			var rel = make((UML_Relationship) comp);
-			rel.getStyleClass().add("composition");
+			var rel = make((UML_Relationship) comp, "composition");
+			//rel.getStyleClass().add("composition");
 			
 			return rel;
 		}
@@ -531,11 +534,13 @@ public class UML_View extends Application {
 		 * @param rel The UML_Relationship to represent
 		 * @return A Group that represents a Relationship
 		 */
-		private Group make(UML_Relationship rel) {
+		private Group make(UML_Relationship rel, String style_type) {
 			var l = new Line(rel.getSource().getX(),
 			 		 rel.getSource().getY(),
 			 		 rel.getTarget().getX(),
 			 		 rel.getTarget().getY());
+			
+			l.getStyleClass().add(style_type);
 
 			l.startXProperty().bind(rel.getSource().centerXProperty());
 			l.startYProperty().bind(rel.getSource().centerYProperty());
