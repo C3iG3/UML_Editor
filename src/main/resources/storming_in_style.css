@@ -1,0 +1,30 @@
+
+
+.classbox {
+	-fx-background-color: seashell;
+
+
+}
+
+
+.dependency {
+	-fx-stroke-width: 5;
+    -fx-stroke: slategrey;
+ 	-fx-stroke-dash-array: 10;
+ 	
+
+}
+
+.generalization {
+
+
+}
+
+.aggregation {
+
+
+}
+
+.composition {
+
+}
