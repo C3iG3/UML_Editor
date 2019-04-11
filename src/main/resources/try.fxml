@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="storming.uml_editor.view.UML_View">
+<AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="storming.uml_editor.view.UML_View">
    <children>
-      <ToolBar prefHeight="30.0" prefWidth="563.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ToolBar fx:id="top" prefHeight="30.0" prefWidth="563.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <Button mnemonicParsing="false" text="Load" />
           <Button mnemonicParsing="false" text="Save" />
@@ -19,7 +19,7 @@
         </items>
       </ToolBar>
       <VBox fx:id="inspector" layoutX="519.0" layoutY="94.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0" />
-      <VBox layoutY="42.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="41.0">
+      <VBox fx:id="leftbuttons" layoutY="42.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="41.0">
          <children>
             <Button mnemonicParsing="false" onMouseClicked="#putClassBox" prefHeight="25.0" prefWidth="178.0" text="Class Box" />
             <Button mnemonicParsing="false" onMouseClicked="#putDependency" prefHeight="25.0" prefWidth="178.0" text="Dependency" />
