@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.css.Style;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -188,6 +189,7 @@ public class UML_View extends Application {
 	@FXML
 	private void putComposition(MouseEvent event) {
 		putRelationship(new UML_Composition());	
+		
 	}
 	
 	/**
@@ -360,19 +362,22 @@ public class UML_View extends Application {
 			var name = new Text(cbox.getName());
 			name.wrappingWidthProperty().bind(cbox.widthProperty());
 			name.textProperty().bind(cbox.nameProperty());
+			name.setFill(Color.web("#FFFFFF"));
+			
 			
 			content.getChildren().addAll(name, new Separator());
 			
 			for (var attr : cbox.getAttributes()) {
 				var attrVisibility = new Text(attr.getVisibility());
 				attrVisibility.textProperty().bind(attr.visibilityProperty());
+				attrVisibility.setFill(Color.web("#ee0290"));
 				
 				var attrName = new Text(attr.getName());
 				attrName.textProperty().bind(attr.nameProperty());
-				
+				attrName.setFill(Color.web("#FFFFFF"));
 				var attrType = new Text(attr.getType());
 				attrType.textProperty().bind(attr.typeProperty());
-				
+				attrType.setFill(Color.web("#FFFFFF"));
 				content.getChildren().add(new HBox(attrVisibility, attrName, attrType));
 			}
 			
@@ -381,9 +386,10 @@ public class UML_View extends Application {
 			for (var op : cbox.getOperations()) {
 				var opVisibility = new Text(op.getVisibility());
 				opVisibility.textProperty().bind(op.visibilityProperty());
-				
+				opVisibility.setFill(Color.web("#ee0290"));
 				var opSignature = new Text(op.getSignature());
 				opSignature.textProperty().bind(op.signatureProperty());
+				opSignature.setFill(Color.web("#FFFFFF"));
 				
 				content.getChildren().add(new HBox(opVisibility, opSignature));
 			}
@@ -393,6 +399,7 @@ public class UML_View extends Application {
 			var extra = new Text(cbox.getExtra());
 			extra.wrappingWidthProperty().bind(cbox.widthProperty());
 			extra.textProperty().bind(cbox.extraProperty());
+			extra.setFill(Color.web("#FFFFFF"));
 			
 			content.getChildren().add(extra);
 			
@@ -493,7 +500,7 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Dependency dep) {
 			var rel = make((UML_Relationship) dep, "dependency");
-			//rel.getStyleClass().add("dependency");
+			
 			
 		
 			
@@ -509,7 +516,6 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Generalization gen) {
 			var rel = make((UML_Relationship) gen, "generalization");
-			//rel.getStyleClass().add("generalization");
 
 			
 			return rel;
@@ -524,7 +530,6 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Aggregation agg) {
 			var rel = make((UML_Relationship) agg, "aggregation");
-			//rel.getStyleClass().add("aggregation");
 			
 			return rel;
 		}
@@ -538,7 +543,6 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Association assoc) {
 			var rel = make((UML_Relationship) assoc, "association");
-			//rel.getStyleClass().add("association");
 			
 			return rel;
 		}
@@ -552,7 +556,7 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Composition comp) {
 			var rel = make((UML_Relationship) comp, "composition");
-			//rel.getStyleClass().add("composition");
+			
 			
 			return rel;
 		}
