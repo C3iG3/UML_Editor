@@ -1,19 +1,30 @@
 package storming.uml_editor.view;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+
+import javax.imageio.ImageIO;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.css.Style;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.PrintResolution;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +38,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
@@ -46,7 +58,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import javafx.scene.text.TextFlow;
+import javafx.scene.transform.Scale;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+
 import storming.uml_editor.controller.UML_Controller;
 import storming.uml_editor.model.UML_Element;
 import storming.uml_editor.model.relationships.UML_Dependency;
@@ -184,6 +201,19 @@ public class UML_View extends Application {
 	private void zoom(ZoomEvent event) {
 		items.setScaleX(items.getScaleX() * event.getZoomFactor());
 		items.setScaleY(items.getScaleY() * event.getZoomFactor());
+	}
+	
+//	Snapshot idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	@FXML
+	void print(ActionEvent event) {
+		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
+		var img = items.snapshot(null, null);
+		
+		try {
+		    ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", out);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 	}
 	
 	/**
