@@ -1,30 +1,48 @@
 
 
 .classbox {
-	-fx-background-color: seashell;
-
+	-fx-background-color: #6002EE;
 
 }
 
 
 .dependency {
 	-fx-stroke-width: 5;
-    -fx-stroke: slategrey;
+    -fx-stroke: #EE6002;
  	-fx-stroke-dash-array: 10;
  	
 
 }
 
 .generalization {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
 
 
 }
 
+.association {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
+
+}
+
 .aggregation {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
 
 
 }
 
 .composition {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
 
 }
+
+#items {
+	-fx-background-color: #1F2021;
+
+}
+
+
