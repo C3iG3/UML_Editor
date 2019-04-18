@@ -1,5 +1,7 @@
 package storming.uml_editor.model;
 
+import org.json.JSONObject;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -90,6 +92,13 @@ public abstract class UML_Element {
 	public Long getKey() {
 		return key;
 	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Element
+	 * 
+	 * @return A JSONObject representing the UML Element
+	 */
+	public abstract JSONObject toJSON();
 	
 	/**
 	 * Sets the key of this element. Should only ever be called (and be accessible) by a model

@@ -1,5 +1,7 @@
 package storming.uml_editor.model.relationships;
 
+import org.json.JSONObject;
+
 import storming.uml_editor.model.things.UML_Thing;
 
 /**
@@ -32,5 +34,19 @@ public class UML_Generalization extends UML_Relationship {
 	 */
 	public UML_Generalization(String name, UML_Thing source, UML_Thing target) {
 		super(name, source, target);
+	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Generalization
+	 * 
+	 * @return A JSONObject representing the UML Generalization
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("type", "generalization");
+		json.put("name", getName());
+		json.put("source", source.getKey());
+		json.put("target", target.getKey());
+		return json;
 	}
 }

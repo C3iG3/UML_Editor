@@ -1,5 +1,7 @@
 package storming.uml_editor.model.relationships.associations;
 
+import org.json.JSONObject;
+
 import storming.uml_editor.model.relationships.UML_Relationship;
 import storming.uml_editor.model.things.UML_Thing;
 
@@ -33,5 +35,19 @@ public class UML_Association extends UML_Relationship {
 	 */
 	public UML_Association(String name, UML_Thing source, UML_Thing target) {
 		super(name, source, target);
+	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Association
+	 * 
+	 * @return A JSONObject representing the UML Association
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("type", "association");
+		json.put("name", getName());
+		json.put("source", source.getKey());
+		json.put("target", target.getKey());
+		return json;
 	}
 }

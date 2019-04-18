@@ -1,5 +1,7 @@
 package storming.uml_editor.model.relationships;
 
+import org.json.JSONObject;
+
 import storming.uml_editor.model.UML_Element;
 import storming.uml_editor.model.things.UML_Thing;
 
@@ -134,4 +136,11 @@ public abstract class UML_Relationship extends UML_Element {
 	public boolean hasTarget() {
 		return target != null;
 	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Relationship
+	 * 
+	 * @return A JSONObject representing the UML Relationship
+	 */
+	public abstract JSONObject toJSON();
 }

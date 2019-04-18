@@ -1,5 +1,7 @@
 package storming.uml_editor.model.relationships.associations;
 
+import org.json.JSONObject;
+
 import storming.uml_editor.model.things.UML_Thing;
 
 /**
@@ -34,4 +36,17 @@ public class UML_Composition extends UML_Association {
 		super(name, source, target);
 	}
 
+	/**
+	 * Returns a JSONObject representing the UML Composition
+	 * 
+	 * @return A JSONObject representing the UML Composition
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("type", "composition");
+		json.put("name", getName());
+		json.put("source", source.getKey());
+		json.put("target", target.getKey());
+		return json;
+	}
 }
