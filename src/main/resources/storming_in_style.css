@@ -10,15 +10,17 @@
 	-fx-stroke-width: 5;
     -fx-stroke: #EE6002;
  	-fx-stroke-dash-array: 10;
- 	
+
 
 }
 
-.generalization {
+.generalization Polygon {
+	-fx-fill: #EE6002;
+}
+
+.generalization Line {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
-
 }
 
 .association {
@@ -61,8 +63,8 @@
 
 #ap {
 	-fx-background-color: #1F2021;
-	
-	
+
+
 
 }
 

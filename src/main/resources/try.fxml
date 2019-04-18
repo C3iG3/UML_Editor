@@ -13,7 +13,7 @@
       <ToolBar fx:id="top" prefHeight="30.0" prefWidth="563.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <Button mnemonicParsing="false" text="Load" />
-          <Button mnemonicParsing="false" text="Save" />
+          <Button mnemonicParsing="false" onAction="#save" text="Save" />
             <Separator orientation="VERTICAL" prefHeight="30.0" />
             <Button mnemonicParsing="false" onAction="#print" text="Print" />
         </items>
