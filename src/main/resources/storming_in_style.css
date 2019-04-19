@@ -67,4 +67,126 @@
 }
 
 
+.longButton{
+	
+	-fx-background-size: 130px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+	-fx-background-color: transparent;
+	-fx-border-color: black;
+}
+
+.longButton:hover{
+    -fx-background-color: orange;
+}
+.longButton:pressed{
+    -fx-background-color: #c45100;
+}
+
+
+#associationButton{
+	-fx-background-image: url("association.png");
+	-fx-padding: 0 0 30 0;
+}
+#aggregationButton{
+	-fx-background-image: url("aggregation.png");
+	-fx-padding: 0 0 30 0;
+}
+#compositionButton{
+	-fx-background-image: url("composition.png");
+	-fx-padding: 0 0 30 0;
+}
+#dependencyButton{
+	-fx-background-image: url("dependency.png");
+	-fx-padding: 0 0 30 0;
+}
+#generalizationButton{
+	-fx-background-image: url("generalization2.png");
+	-fx-padding: 0 0 30 0;
+}
+
+
+
+
+.buttonStyle{
+	-fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 90%;
+	-fx-border-color: transparent;
+    -fx-background-color: transparent;
+   
+}
+.buttonStyle:hover{
+    -fx-background-color: orange;
+}
+.buttonStyle:pressed{
+    -fx-background-color: #EE6002;
+}
+
+
+
+#load{
+	-fx-background-image: url("baseline_folder_white_48dp.png");
+}
+#save{
+  
+    -fx-background-image: url("baseline_save_white_48dp.png");
+}
+#print{
+	-fx-background-image: url("baseline_print_white_48dp.png");
+}
+
+/****************************************************************
+ 
+  ScrollBar Skin  
+ https://farrukhobaid.wordpress.com/2013/01/16/dark-scrollbar-skin-for-javafx/
+****************************************************************/
+.scroll-bar{
+ -fx-background-color: #848586;
+ -fx-background-radius: 2em;
+ -fx-width: 5;
+}
+.scroll-bar:vertical {
+    -fx-pref-width: 17;
+    -fx-padding: 1;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 17;
+    -fx-padding: 1;
+}
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+ -fx-background-color:transparent;
+ -fx-background-radius: 2em;
+ -fx-padding: 5;
+ -fx-font-size: 15;
+}
+.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button {
+ -fx-background-color:transparent;
+ -fx-background-radius: 2em;
+ -fx-padding: 5;
+ -fx-font-size: 15;
+}
+
+.scroll-bar:horizontal .increment-arrow {
+ -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+ -fx-background-color: rgb(211,211,211);
+ -fx-rotate: -90;
+}
+.scroll-bar:vertical .increment-arrow {
+ -fx-background-color: rgb(211,211,211);
+ -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+ -fx-rotate: 0;
+}
+.scroll-bar:horizontal .decrement-arrow {
+ -fx-background-color: rgb(211,211,211);
+ -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+ -fx-rotate: 90;
+}
+.scroll-bar:vertical .decrement-arrow {
+ -fx-background-color: rgb(211,211,211);
+ -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+ -fx-rotate: -180;
+}
 
