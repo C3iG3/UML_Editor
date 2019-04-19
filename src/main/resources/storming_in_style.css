@@ -1,4 +1,46 @@
 
+/*
+Inspector 
+*/
+
+
+.text-field, .text-area  {
+	-fx-background-color: #3B3C3D;
+	-fx-text-fill: white;
+}
+
+ .text-area .content {
+ 	-fx-background-color: #3B3C3D;
+
+ }
+
+
+
+.inspector_labels {
+	-fx-text-fill: white; 
+	-fx-padding: 3 3;
+	-fx-translate-y: 5; 
+}
+
+.inspector_buttons {
+	-fx-background-color: #3B3C3D;
+	-fx-boarder-color: transparent; 
+	-fx-text-fill: orange;
+	-fx-translate-y: 5; 
+
+}
+.inspector_buttons:hover {
+	-fx-background-color: orange;
+	-fx-text-fill: black; 
+	-fx-boarder-color: transparent; 
+	
+}
+
+.inspector_buttons:pressed {
+	-fx-background-color: #c45100;
+	-fx-boarder-color: transparent; 
+	
+}
 
 .classbox {
 	-fx-background-color: #6002EE;

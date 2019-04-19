@@ -635,7 +635,9 @@ public class UML_View extends Application {
 		 * @return A Node representing the label
 		 */
 		private Node label(String text) {
-			return new Label(text);
+			Label l = new Label(text);
+			l.getStyleClass().add("inspector_labels");
+			return l;
 		}
 		
 		/**
@@ -672,7 +674,7 @@ public class UML_View extends Application {
 		 * @return A Node representing the delete button
 		 */
 		private Node delete(UML_Element elem) {
-			return button("Delete", (e) -> {
+			return button("Delete Classbox", (e) -> {
 				controller.remove(elem.getKey());
 				UML_View.this.drawer.delete(elem);
 				
@@ -690,6 +692,7 @@ public class UML_View extends Application {
 		 */
 		private Node button(String text, EventHandler<ActionEvent> onAction) {
 			var button = new Button(text);
+			button.getStyleClass().add("inspector_buttons");
 			button.setOnAction(onAction);
 			
 			return button;
@@ -713,7 +716,7 @@ public class UML_View extends Application {
 		public void update(UML_ClassBox cbox) {
 			clear();
 			
-			addComponent(title("Class Box"));
+			//addComponent(title("Class Box"));
 			
 			addComponent(delete(cbox));
 			
@@ -801,7 +804,7 @@ public class UML_View extends Application {
 			}
 			
 			
-			Label extra_label = new Label("Extra");
+			var extra_label = label("Extra");
 			TextArea extra = new TextArea(cbox.getExtra());
 			extra.setOnKeyTyped((e) -> {
 				cbox.putExtra(extra.getText());
@@ -820,6 +823,7 @@ public class UML_View extends Application {
 			clear();
 			addComponent(delete(rel));
 			addComponent(name(rel));
+			
 		}
 	}
 }
