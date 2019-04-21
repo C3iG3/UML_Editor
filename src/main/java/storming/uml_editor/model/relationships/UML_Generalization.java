@@ -3,6 +3,7 @@ package storming.uml_editor.model.relationships;
 import org.json.JSONObject;
 
 import storming.uml_editor.model.things.UML_Thing;
+import storming.uml_editor.model.things.classbox.UML_Operation;
 
 /**
  * The default constructor for a UML Generalization

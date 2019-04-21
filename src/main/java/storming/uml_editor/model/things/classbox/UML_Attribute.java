@@ -246,6 +246,21 @@ public class UML_Attribute {
 	}
 	
 	/**
+	 * Returns a UML Attribute represented by the given JSON
+	 * 
+	 * @return A UML Attribute
+	 */
+	public static UML_Attribute fromJSON(JSONObject json)
+	{
+		var attr = new UML_Attribute();
+		attr.putName(json.optString("name"));
+		attr.putVisibility(json.optString("visibility"));
+		attr.putType(json.optString("type"));
+		
+		return attr;
+	}
+	
+	/**
 	 * Sets the key of this attribute. Should only ever be called (and be accessible) by a class box
 	 * 
 	 * @param newKey The key for the attribute

@@ -1,9 +1,23 @@
 package storming.uml_editor.controller;
 
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import storming.uml_editor.model.UML_Element;
 import storming.uml_editor.model.UML_Model;
+import storming.uml_editor.model.relationships.UML_Dependency;
+import storming.uml_editor.model.relationships.UML_Generalization;
+import storming.uml_editor.model.relationships.UML_Relationship;
+import storming.uml_editor.model.relationships.associations.UML_Aggregation;
+import storming.uml_editor.model.relationships.associations.UML_Association;
+import storming.uml_editor.model.relationships.associations.UML_Composition;
+import storming.uml_editor.model.things.UML_Thing;
+import storming.uml_editor.model.things.classbox.UML_ClassBox;
 import storming.uml_editor.view.UML_View;
 
 /**
@@ -75,10 +89,12 @@ public class UML_Controller {
 	}
 
 	/**
-	 * TODO When file loading is added
+	 * Draws a UML Element to the view
+	 * 
+	 * @param elem The UML Element to draw
 	 */
 	public void draw(UML_Element elem) {
-
+		view.draw(elem);
 	}
 
 	/**
@@ -88,8 +104,67 @@ public class UML_Controller {
 	 *
 	 * @return TRUE on success; FALSE on failure
 	 */
-	public boolean load(String filepath) {
-		return false;
+	@SuppressWarnings("unchecked")
+	public boolean load(String path) {
+		view.clear();
+		
+		model = new UML_Model(this);
+		
+		JSONObject json = null;
+		try {
+			json = (JSONObject) new JSONParser().parse(new FileReader(path));
+		} catch (IOException | ParseException e) {
+			return false;
+		}
+		
+		json.forEach((key, value) -> {
+			var obj = new org.json.JSONObject(((org.json.simple.JSONObject) value).toJSONString());
+			
+			if (obj.getString("type").equals("classbox"))
+			{
+				draw(put(UML_ClassBox.fromJSON(obj)));
+			}
+		});
+		
+		/*		
+		 * Relationships are handled outside their classes since they need access to the model to
+		 * set their sources and targets and they do not have that access.
+		 * This is also inefficient since classboxes will be iterated over again
+		 */
+		json.forEach((key, value) -> {
+			var obj = new org.json.JSONObject(((org.json.simple.JSONObject) value).toJSONString());
+			
+			if (!obj.getString("type").equals("classbox"))
+			{
+				UML_Relationship rel = null;
+				
+				switch (obj.getString("type")) {
+				case "dependency":
+					rel = new UML_Dependency();
+					break;
+				case "generalization":
+					rel = new UML_Generalization();
+					break;
+				case "association":
+					rel = new UML_Association();
+					break;
+				case "aggregation":
+					rel = new UML_Aggregation();
+					break;
+				case "composition":
+					rel = new UML_Composition();
+					break;
+				}
+				
+				rel.putName(obj.optString("name"));
+				rel.putSource((UML_Thing) model.get(obj.getLong("source")));
+				rel.putTarget((UML_Thing) model.get(obj.getLong("target")));
+				
+				draw(put(rel));
+			}
+		});
+		
+		return true;
 	}
 
 	/**
@@ -101,8 +176,6 @@ public class UML_Controller {
 	 */
 	public boolean save(String path) {
 		var json = model.toJSON();
-		
-		System.out.println("Path" + path);
 		
 		try {
 			var writer = new FileWriter(path);

@@ -176,6 +176,20 @@ public class UML_Operation {
 	}
 	
 	/**
+	 * Returns a UML Operation represented by the given JSON
+	 * 
+	 * @return A UML Operation
+	 */
+	public static UML_Operation fromJSON(JSONObject json)
+	{
+		var op = new UML_Operation();
+		op.putVisibility(json.optString("visibility"));
+		op.putSignature(json.optString("signature"));
+		
+		return op;
+	}
+	
+	/**
 	 * Sets the key of this operation. Should only ever be called (and be accessible) by a class box
 	 * 
 	 * @param newKey The key for the operation
