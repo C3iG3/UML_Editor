@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.css.Style;
 import javafx.embed.swing.SwingFXUtils;
@@ -219,11 +220,17 @@ public class UML_View extends Application {
 	}
 
 	@FXML
-	void save(ActionEvent event) {
+	private void save(ActionEvent event) {
 		var filepath = new FileChooser().showSaveDialog(items.getScene().getWindow()).getAbsolutePath();
 		filepath += ".json";
 
 		controller.save(filepath);
+	}
+	
+	@FXML
+	private void load(ActionEvent event) {
+		var filepath = new FileChooser().showOpenDialog(items.getScene().getWindow()).getAbsolutePath();
+		controller.load(filepath);
 	}
 
 	/**
@@ -269,6 +276,23 @@ public class UML_View extends Application {
 			this.onUnfocus.run();
 
 		this.onUnfocus = onUnfocus;
+	}
+	
+	/**
+	 * Draws a UML Element to the view
+	 * 
+	 * @param elem The UML_Element to draw
+	 */
+	public void draw(UML_Element elem) {
+		drawer.draw(elem);
+	}
+	
+	/**
+	 * Clears all UML Elements from the view
+	 */
+	public void clear() {
+		items.getChildren().clear();
+		inspect.clear();
 	}
 
 	/**
@@ -491,8 +515,6 @@ public class UML_View extends Application {
 				r.setStroke(Color.BLACK);
 			});
 
-			box.setOpacity(0.8);
-
 			return box;
 		}
 
@@ -582,11 +604,82 @@ public class UML_View extends Application {
 					rel.getTarget().getY());
 
 			// l.getStyleClass().add(style_type);
+			
+			DoubleBinding xDist = rel.getSource().centerXProperty().subtract(rel.getTarget().centerXProperty());
+			DoubleBinding yDist = rel.getTarget().centerYProperty().subtract(rel.getSource().centerYProperty());
+			DoubleBinding theta = Bindings.createDoubleBinding(() -> {
+				return Math.toDegrees(Math.atan(yDist.get() / xDist.get()));
+			}, yDist, xDist);
+			
+			var source = rel.getSource();
+			var target = rel.getTarget();
+			
+			DoubleBinding boundTheta = Bindings.createDoubleBinding(() -> {
+				return Math.toDegrees(Math.atan((target.heightProperty().get() / 2) / (target.widthProperty().get() / 2)));
+			}, target.widthProperty(), target.heightProperty());
+			
+			
+			System.out.println(boundTheta.get());
+			
+			l.endXProperty()
+			.bind(
+				Bindings
+				.when(source.centerXProperty().lessThan(target.centerXProperty()))
+				.then(
+					Bindings
+					.when(theta.lessThan(boundTheta).and(theta.greaterThan(boundTheta.negate())))
+					.then(target.centerXProperty().subtract(target.widthProperty().divide(2)))
+					.otherwise(
+						Bindings.createDoubleBinding(() -> {
+							return target.centerXProperty().get() - ((target.heightProperty().get() * Math.tan(Math.toRadians(90 - Math.abs(theta.get())))) / 2);
+						}, target.heightProperty(), theta, target.centerXProperty())
+					)
+				).otherwise(
+					Bindings
+					.when(theta.lessThan(boundTheta).and(theta.greaterThan(boundTheta.negate())))
+					.then(target.centerXProperty().add(target.widthProperty().divide(2)))
+					.otherwise(
+						Bindings.createDoubleBinding(() -> {
+							return target.centerXProperty().get() + ((target.heightProperty().get() * Math.tan(Math.toRadians(90 - Math.abs(theta.get())))) / 2);
+						}, target.heightProperty(), theta, target.centerXProperty())
+					)
+				)
+			);
+			
+			l.endYProperty()
+			.bind(
+				Bindings
+				.when(source.centerYProperty().lessThan(target.centerYProperty()))
+				.then(
+					Bindings
+					.when(theta.greaterThan(boundTheta).or(theta.lessThan(boundTheta.negate())))
+					.then(target.centerYProperty().subtract(target.heightProperty().divide(2)))
+					.otherwise(
+						Bindings.createDoubleBinding(() -> {
+							return target.centerYProperty().get() - ((target.widthProperty().get() * Math.tan(Math.toRadians(Math.abs(theta.get())))) / 2);
+						}, target.widthProperty(), theta, target.centerYProperty())
+					)
+				).otherwise(
+					Bindings
+					.when(theta.greaterThan(boundTheta).or(theta.lessThan(boundTheta.negate())))
+					.then(target.centerYProperty().add(target.heightProperty().divide(2)))
+					.otherwise(
+						Bindings.createDoubleBinding(() -> {
+							return target.centerYProperty().get() + ((target.widthProperty().get() * Math.tan(Math.toRadians(Math.abs(theta.get())))) / 2);
+						}, target.widthProperty(), theta, target.centerYProperty())
+					)
+				)
+			);
+			
+//			System.out.println("Width: " + xDist.get());
+//			System.out.println("Height: " + yDist.get());
+//			System.out.println(Math.toDegrees(Math.atan(yDist.get() / xDist.get())));
+			
 
 			l.startXProperty().bind(rel.getSource().centerXProperty());
 			l.startYProperty().bind(rel.getSource().centerYProperty());
-			l.endXProperty().bind(rel.getTarget().centerXProperty());
-			l.endYProperty().bind(rel.getTarget().centerYProperty());
+//			l.endXProperty().bind(rel.getTarget().centerXProperty());
+//			l.endYProperty().bind(rel.getTarget().centerYProperty());
 
 			l.setOnMouseClicked((e) -> {
 				focus(() -> {
@@ -604,6 +697,7 @@ public class UML_View extends Application {
 			name.textProperty().bind(rel.nameProperty());
 
 			// Does not handle divide by 0
+			
 			var width = rel.getSource().centerXProperty().subtract(rel.getTarget().centerXProperty());
 			var height = rel.getSource().centerYProperty().subtract(rel.getTarget().centerYProperty());
 
@@ -631,7 +725,7 @@ public class UML_View extends Application {
 		/**
 		 * Clears all the children from the inspector
 		 */
-		private void clear() {
+		public void clear() {
 			inspector.getChildren().clear();
 		}
 
