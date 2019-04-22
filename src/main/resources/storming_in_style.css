@@ -47,50 +47,38 @@ Inspector
 
 }
 
-
 .dependency {
 	-fx-stroke-width: 5;
     -fx-stroke: #EE6002;
  	-fx-stroke-dash-array: 10;
- 	
-
 }
 
 .generalization {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
-
 }
 
 .association {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
 }
 
 .aggregation {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
-
 }
 
 .composition {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
 }
 
 #items {
 	-fx-background-color: #1F2021;
-
 }
 
 #top {
-
 	-fx-background-color: #3B3C3D;
-
 }
 
 #leftbuttons {
@@ -116,11 +104,14 @@ Inspector
     -fx-background-position: 50%;
 	-fx-background-color: transparent;
 	-fx-border-color: black;
+	-fx-text-fill: white;
 }
 
 .longButton:hover{
     -fx-background-color: orange;
+    -fx-text-fill: black;
 }
+
 .longButton:pressed{
     -fx-background-color: #c45100;
 }
@@ -160,6 +151,7 @@ Inspector
 }
 .buttonStyle:hover{
     -fx-background-color: orange;
+    
 }
 .buttonStyle:pressed{
     -fx-background-color: #EE6002;
@@ -178,33 +170,15 @@ Inspector
 	-fx-background-image: url("baseline_print_white_48dp.png");
 }
 
-/****************************************************************
- 
-  ScrollBar Skin  
- https://farrukhobaid.wordpress.com/2013/01/16/dark-scrollbar-skin-for-javafx/
-****************************************************************/
+
 .scroll-bar{
  -fx-background-color: #848586;
  -fx-background-radius: 2em;
  -fx-width: 5;
-}
-.scroll-bar:vertical {
-    -fx-pref-width: 17;
-    -fx-padding: 1;
+ 
 }
 
-.scroll-bar:horizontal {
-    -fx-pref-height: 17;
-    -fx-padding: 1;
-}
-
-.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
- -fx-background-color:transparent;
- -fx-background-radius: 2em;
- -fx-padding: 5;
- -fx-font-size: 15;
-}
-.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button {
+.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button, .scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
  -fx-background-color:transparent;
  -fx-background-radius: 2em;
  -fx-padding: 5;
@@ -212,23 +186,32 @@ Inspector
 }
 
 .scroll-bar:horizontal .increment-arrow {
- -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
- -fx-background-color: rgb(211,211,211);
+ -fx-shape: "M 100 100 L 300 100 L 200 300 z";
+ -fx-background-color: #d3d3d3;
  -fx-rotate: -90;
 }
-.scroll-bar:vertical .increment-arrow {
- -fx-background-color: rgb(211,211,211);
- -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+
+.scroll-bar:vertical  .increment-arrow {
+ -fx-shape: "M 100 100 L 300 100 L 200 300 z";
+ -fx-background-color: #d3d3d3;
  -fx-rotate: 0;
 }
-.scroll-bar:horizontal .decrement-arrow {
- -fx-background-color: rgb(211,211,211);
- -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+
+.scroll-bar:horizontal  .decrement-arrow {
+ -fx-shape: "M 100 100 L 300 100 L 200 300 z";
+ -fx-background-color: #d3d3d3;
  -fx-rotate: 90;
+ 
 }
+
 .scroll-bar:vertical .decrement-arrow {
- -fx-background-color: rgb(211,211,211);
- -fx-shape: "M 1 0 L 4 8 L 8 0 Z";
+ -fx-shape: "M 100 100 L 300 100 L 200 300 z";
+ -fx-background-color: #d3d3d3;
  -fx-rotate: -180;
+}
+
+.scroll-pane > .corner {
+-fx-background-color: #1F2021;
+
 }
 

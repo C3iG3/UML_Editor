@@ -716,14 +716,14 @@ public class UML_View extends Application {
 		public void update(UML_ClassBox cbox) {
 			clear();
 			
-			//addComponent(title("Class Box"));
+			
 			
 			addComponent(delete(cbox));
 			
 			addComponent(new VBox(label("Name"), 
 								  name(cbox)));
 			
-			addComponent(label("Attributes"));
+			
 			
 			addComponent(button("Add Attribute", (e) -> {
 				cbox.putAttribute(new UML_Attribute());
@@ -766,7 +766,7 @@ public class UML_View extends Application {
 				addComponent(new HBox(choose, attrName, attrType));
 			}
 			
-			addComponent(label("Operations"));
+			
 			
 			addComponent(button("Add Operation", (e) -> {
 				cbox.putOperation(new UML_Operation());

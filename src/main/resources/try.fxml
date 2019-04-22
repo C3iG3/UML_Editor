@@ -32,11 +32,11 @@
       <VBox fx:id="leftbuttons" layoutY="42.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="41.0">
          <children>
             <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putClassBox" prefHeight="41.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Class Box" textFill="WHITE" />
-            <Button id="dependencyButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putDependency" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Dependency" textFill="WHITE" />
-            <Button id="generalizationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putGeneralization" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Generalization" textFill="WHITE" />
-            <Button id="associationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putAssociation" prefHeight="56.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Association" textFill="WHITE" />
-            <Button id="aggregationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putAggregation" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Aggregation" textFill="WHITE" />
-            <Button id="compositionButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putComposition" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Composition" textFill="WHITE" />
+            <Button id="dependencyButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putDependency" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Dependency"  />
+            <Button id="generalizationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putGeneralization" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Generalization"  />
+            <Button id="associationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putAssociation" prefHeight="56.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Association"  />
+            <Button id="aggregationButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putAggregation" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Aggregation"  />
+            <Button id="compositionButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#putComposition" prefHeight="60.0" prefWidth="150.0" styleClass="longButton" stylesheets="@storming_in_style.css" text="Composition"  />
          </children>
          
       </VBox>
