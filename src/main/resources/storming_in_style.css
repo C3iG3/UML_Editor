@@ -15,7 +15,9 @@
 }
 
 .generalization Polygon {
-	-fx-fill: #EE6002;
+	-fx-fill: #1F2021;
+	-fx-stroke: #EE6002;
+	-fx-stroke-width: 5;
 }
 
 .generalization Line {

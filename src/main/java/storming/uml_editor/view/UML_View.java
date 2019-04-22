@@ -514,6 +514,8 @@ public class UML_View extends Application {
 			focus(() -> {
 				r.setStroke(Color.BLACK);
 			});
+			
+			box.setOpacity(0.8);
 
 			return box;
 		}
@@ -541,10 +543,50 @@ public class UML_View extends Application {
 		private Group make(UML_Generalization gen) {
 			var rel = make((UML_Relationship) gen, "generalization");
 
-			var arrow = new Polygon(0.0, 0.0, 40.0, 0.0, 20.0, 20.0);
-
-			arrow.layoutXProperty().bind(gen.getTarget().centerXProperty());
-			arrow.layoutYProperty().bind(gen.getTarget().centerYProperty());
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -15.0, -15.0, 15.0, -15.0);
+			
+			arrow.layoutXProperty().bind(line.endXProperty());
+			arrow.layoutYProperty().bind(line.endYProperty());
+			
+			DoubleBinding xDist = line.startXProperty().subtract(line.endXProperty());
+			DoubleBinding yDist = line.startYProperty().subtract(line.endYProperty());
+			DoubleBinding theta = Bindings.createDoubleBinding(() -> {
+				return Math.toDegrees(Math.atan(yDist.get() / xDist.get()));
+			}, yDist, xDist);
+			
+			System.out.println(theta.get());
+			
+			arrow.rotateProperty()
+			.bind(
+				Bindings
+				.when( // Top left
+					line.startXProperty().lessThan(line.endXProperty())
+					.and(line.startYProperty().lessThan(line.endYProperty()))
+				)
+				.then(theta.subtract(90))
+				.otherwise(
+					Bindings
+					.when( // Bottom left
+						line.startXProperty().lessThan(line.endXProperty())
+						.and(line.startYProperty().greaterThan(line.endYProperty()))
+					)
+					.then(theta.subtract(90))
+					.otherwise(
+						Bindings
+						.when( // Bottom right
+							line.startXProperty().greaterThan(line.endXProperty())
+							.and(line.startYProperty().greaterThan(line.endYProperty()))
+						)
+						.then(theta.add(90))
+						.otherwise( // Top right
+							Bindings.createDoubleBinding(() -> {
+								return (theta.get() + 90);
+							}, theta)
+						)
+					)
+				)
+			);
 
 			rel.getChildren().add(arrow);
 
@@ -618,9 +660,6 @@ public class UML_View extends Application {
 				return Math.toDegrees(Math.atan((target.heightProperty().get() / 2) / (target.widthProperty().get() / 2)));
 			}, target.widthProperty(), target.heightProperty());
 			
-			
-			System.out.println(boundTheta.get());
-			
 			l.endXProperty()
 			.bind(
 				Bindings
@@ -628,7 +667,7 @@ public class UML_View extends Application {
 				.then(
 					Bindings
 					.when(theta.lessThan(boundTheta).and(theta.greaterThan(boundTheta.negate())))
-					.then(target.centerXProperty().subtract(target.widthProperty().divide(2)))
+					.then(target.centerXProperty().subtract(target.widthProperty().divide(2)).subtract(20))
 					.otherwise(
 						Bindings.createDoubleBinding(() -> {
 							return target.centerXProperty().get() - ((target.heightProperty().get() * Math.tan(Math.toRadians(90 - Math.abs(theta.get())))) / 2);
@@ -637,7 +676,7 @@ public class UML_View extends Application {
 				).otherwise(
 					Bindings
 					.when(theta.lessThan(boundTheta).and(theta.greaterThan(boundTheta.negate())))
-					.then(target.centerXProperty().add(target.widthProperty().divide(2)))
+					.then(target.centerXProperty().add(target.widthProperty().divide(2)).add(20))
 					.otherwise(
 						Bindings.createDoubleBinding(() -> {
 							return target.centerXProperty().get() + ((target.heightProperty().get() * Math.tan(Math.toRadians(90 - Math.abs(theta.get())))) / 2);
@@ -653,7 +692,7 @@ public class UML_View extends Application {
 				.then(
 					Bindings
 					.when(theta.greaterThan(boundTheta).or(theta.lessThan(boundTheta.negate())))
-					.then(target.centerYProperty().subtract(target.heightProperty().divide(2)))
+					.then(target.centerYProperty().subtract(target.heightProperty().divide(2)).subtract(20))
 					.otherwise(
 						Bindings.createDoubleBinding(() -> {
 							return target.centerYProperty().get() - ((target.widthProperty().get() * Math.tan(Math.toRadians(Math.abs(theta.get())))) / 2);
@@ -662,7 +701,7 @@ public class UML_View extends Application {
 				).otherwise(
 					Bindings
 					.when(theta.greaterThan(boundTheta).or(theta.lessThan(boundTheta.negate())))
-					.then(target.centerYProperty().add(target.heightProperty().divide(2)))
+					.then(target.centerYProperty().add(target.heightProperty().divide(2)).add(20))
 					.otherwise(
 						Bindings.createDoubleBinding(() -> {
 							return target.centerYProperty().get() + ((target.widthProperty().get() * Math.tan(Math.toRadians(Math.abs(theta.get())))) / 2);
@@ -671,15 +710,9 @@ public class UML_View extends Application {
 				)
 			);
 			
-//			System.out.println("Width: " + xDist.get());
-//			System.out.println("Height: " + yDist.get());
-//			System.out.println(Math.toDegrees(Math.atan(yDist.get() / xDist.get())));
-			
 
 			l.startXProperty().bind(rel.getSource().centerXProperty());
 			l.startYProperty().bind(rel.getSource().centerYProperty());
-//			l.endXProperty().bind(rel.getTarget().centerXProperty());
-//			l.endYProperty().bind(rel.getTarget().centerYProperty());
 
 			l.setOnMouseClicked((e) -> {
 				focus(() -> {
