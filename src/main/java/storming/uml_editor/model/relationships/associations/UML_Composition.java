@@ -47,6 +47,10 @@ public class UML_Composition extends UML_Association {
 		json.put("name", getName());
 		json.put("source", source.getKey());
 		json.put("target", target.getKey());
+		json.put("sourceMultiplicityLower", getSourceMultiplictyLower());
+		json.put("sourceMultiplicityUpper", getSourceMultiplictyUpper());
+		json.put("targetMultiplicityLower", getTargetMultiplictyLower());
+		json.put("targetMultiplicityUpper", getTargetMultiplictyUpper());
 		return json;
 	}
 }

@@ -160,6 +160,14 @@ public class UML_Controller {
 				rel.putSource((UML_Thing) model.get(obj.getLong("source")));
 				rel.putTarget((UML_Thing) model.get(obj.getLong("target")));
 				
+				if (rel instanceof UML_Association)
+				{
+					((UML_Association) rel).putSourceMultiplictyLower(obj.optString("sourceMultiplicityLower"));
+					((UML_Association) rel).putSourceMultiplictyUpper(obj.optString("sourceMultiplicityUpper"));
+					((UML_Association) rel).putTargetMultiplictyLower(obj.optString("targetMultiplicityLower"));
+					((UML_Association) rel).putTargetMultiplictyUpper(obj.optString("targetMultiplicityUpper"));
+				}
+				
 				draw(put(rel));
 			}
 		});
