@@ -2,16 +2,17 @@
 
 .classbox {
 	-fx-background-color: #6002EE;
-
 }
 
-
-.dependency {
+.dependency Polygon {
+	-fx-fill: #1F2021;
+	-fx-stroke: #EE6002;
 	-fx-stroke-width: 5;
-    -fx-stroke: #EE6002;
- 	-fx-stroke-dash-array: 10;
+}
 
-
+.dependency Line {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
 }
 
 .generalization Polygon {
@@ -25,23 +26,41 @@
 	-fx-stroke: #EE6002;
 }
 
-.association {
-	-fx-stroke-width: 5;
+.aggregation Polygon {
+	-fx-fill: #1F2021;
 	-fx-stroke: #EE6002;
-
+	-fx-stroke-width: 5;
 }
 
-.aggregation {
+.aggregation Line {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
-
-
 }
 
-.composition {
+.association Polygon {
+	-fx-fill: #1F2021;
+	-fx-stroke: #EE6002;
+	-fx-stroke-width: 5;
+}
+
+.association Line {
 	-fx-stroke-width: 5;
 	-fx-stroke: #EE6002;
+}
 
+.composition Polygon {
+	-fx-fill: #EE6002;
+	-fx-stroke: #EE6002;
+	-fx-stroke-width: 5;
+}
+
+.composition Line {
+	-fx-stroke-width: 5;
+	-fx-stroke: #EE6002;
+}
+
+Line:focus {
+	-fx-stroke-width: 100;
 }
 
 #items {
