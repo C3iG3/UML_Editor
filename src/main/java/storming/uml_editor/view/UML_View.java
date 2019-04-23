@@ -47,6 +47,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -139,7 +143,7 @@ public class UML_View extends Application {
 
 		double x = scroll.getHvalue() * items.getWidth() - (width / 2);
 		double y = scroll.getVvalue() * items.getHeight() - (height / 2);
-
+		
 		drawer.draw(controller.put(new UML_ClassBox(x, y, width, height)));
 	}
 
@@ -210,6 +214,7 @@ public class UML_View extends Application {
 	@FXML
 	void print(ActionEvent event) {
 		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
+		System.out.println(out);
 		var img = items.snapshot(null, null);
 
 		try {
@@ -249,16 +254,23 @@ public class UML_View extends Application {
 			@Override
 			public void handle(MouseEvent e) {
 				Node n = (Node) e.getTarget();
-
-				while (!(n instanceof StackPane))
-					n = n.getParent();
-
-				if (!rel.hasSource())
-					rel.putSource(controller.get(Integer.parseInt(n.getId()), UML_Thing.class));
-				else {
-					rel.putTarget(controller.get(Integer.parseInt(n.getId()), UML_Thing.class));
+				
+				System.out.println(n.getStyleClass());
+				
+				if (!n.getStyleClass().contains("classbox-mask"))
 					items.removeEventFilter(MouseEvent.MOUSE_CLICKED, this);
-					drawer.draw(controller.put(rel));
+				else
+				{
+					while (!(n instanceof StackPane))
+						n = n.getParent();
+
+					if (!rel.hasSource())
+						rel.putSource(controller.get(Integer.parseInt(n.getId()), UML_Thing.class));
+					else {
+						rel.putTarget(controller.get(Integer.parseInt(n.getId()), UML_Thing.class));
+						items.removeEventFilter(MouseEvent.MOUSE_CLICKED, this);
+						drawer.draw(controller.put(rel));
+					}
 				}
 			}
 		});
@@ -323,10 +335,11 @@ public class UML_View extends Application {
 				n = make((UML_Generalization) elem);
 			else if (elem instanceof UML_Aggregation)
 				n = make((UML_Aggregation) elem);
-			else if (elem instanceof UML_Association)
-				n = make((UML_Association) elem);
 			else if (elem instanceof UML_Composition)
 				n = make((UML_Composition) elem);
+			else if (elem instanceof UML_Association)
+				n = make((UML_Association) elem);
+			
 
 			n.setId(elem.getKey().toString());
 
@@ -435,9 +448,18 @@ public class UML_View extends Application {
 			r.setFill(Color.WHITE);
 			r.widthProperty().bind(cbox.widthProperty());
 			r.heightProperty().bind(cbox.heightProperty());
+			
+			// Mask used when creating relationships
+			var mask = new Rectangle(cbox.getWidth(), cbox.getHeight());
+			mask.setFill(Color.TRANSPARENT);
+			mask.widthProperty().bind(r.widthProperty());
+			mask.heightProperty().bind(r.heightProperty());
+			mask.getStyleClass().add("classbox-mask");
 
 			var resize = new Rectangle(10, 10);
 			resize.setFill(Color.DARKGRAY);
+			// This needs to rest on top of the normal mask to be dragged
+			resize.getStyleClass().add("classbox-mask");
 
 			resize.setOnMousePressed((press) -> {
 				var clickStartX = press.getSceneX();
@@ -468,7 +490,7 @@ public class UML_View extends Application {
 				press.consume();
 			});
 
-			var box = new StackPane(r, content, resize);
+			var box = new StackPane(r, content, mask, resize);
 			box.layoutXProperty().bind(cbox.xProperty());
 			box.layoutYProperty().bind(cbox.yProperty());
 
@@ -499,10 +521,10 @@ public class UML_View extends Application {
 
 			box.setOnMouseClicked((e) -> {
 				focus(() -> {
-					r.setStroke(Color.BLACK);
+					content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 				});
 
-				r.setStroke(Color.DARKTURQUOISE);
+				content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("EE6002"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 				inspect.update(cbox);
 
@@ -512,40 +534,21 @@ public class UML_View extends Application {
 			});
 
 			focus(() -> {
-				r.setStroke(Color.BLACK);
+				content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 			});
 			
-			box.setOpacity(0.8);
+			content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("EE6002"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 			return box;
 		}
-
+		
 		/**
-		 * Makes a Group containing all the components and bindings needed to represent
-		 * the given UML_Dependency
-		 *
-		 * @param dep The UML_Dependency to represent
-		 * @return A Group that represents a Dependency
+		 * Connects (binds) an arrow to a line so that it rotates properly
+		 * 
+		 * @param line The line to connect the arrow to
+		 * @param arrow The arrow to connect
 		 */
-		private Group make(UML_Dependency dep) {
-			var rel = make((UML_Relationship) dep, "dependency");
-
-			return rel;
-		}
-
-		/**
-		 * Makes a Group containing all the components and bindings needed to represent
-		 * the given UML_Generalization
-		 *
-		 * @param gen The UML_Generalization to represent
-		 * @return A Group that represents a Generalization
-		 */
-		private Group make(UML_Generalization gen) {
-			var rel = make((UML_Relationship) gen, "generalization");
-
-			var line = (Line) rel.getChildren().get(1);
-			var arrow = new Polygon(0.0, 0.0, -15.0, -15.0, 15.0, -15.0);
-			
+		private void connectArrow(Line line, Polygon arrow) {
 			arrow.layoutXProperty().bind(line.endXProperty());
 			arrow.layoutYProperty().bind(line.endYProperty());
 			
@@ -554,8 +557,6 @@ public class UML_View extends Application {
 			DoubleBinding theta = Bindings.createDoubleBinding(() -> {
 				return Math.toDegrees(Math.atan(yDist.get() / xDist.get()));
 			}, yDist, xDist);
-			
-			System.out.println(theta.get());
 			
 			arrow.rotateProperty()
 			.bind(
@@ -587,6 +588,44 @@ public class UML_View extends Application {
 					)
 				)
 			);
+		}
+
+		/**
+		 * Makes a Group containing all the components and bindings needed to represent
+		 * the given UML_Dependency
+		 *
+		 * @param dep The UML_Dependency to represent
+		 * @return A Group that represents a Dependency
+		 */
+		private Group make(UML_Dependency dep) {
+			var rel = make((UML_Relationship) dep, "dependency");
+
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, 0.0, 10.0, -10.0, 0.0, 0.0);
+			
+			connectArrow(line, arrow);
+			
+			rel.getChildren().add(arrow);
+			
+			rel.getStyleClass().add("dependency");
+			
+			return rel;
+		}
+
+		/**
+		 * Makes a Group containing all the components and bindings needed to represent
+		 * the given UML_Generalization
+		 *
+		 * @param gen The UML_Generalization to represent
+		 * @return A Group that represents a Generalization
+		 */
+		private Group make(UML_Generalization gen) {
+			var rel = make((UML_Relationship) gen, "generalization");
+
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 10.0, -10.0);
+			
+			connectArrow(line, arrow);
 
 			rel.getChildren().add(arrow);
 
@@ -604,6 +643,15 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Aggregation agg) {
 			var rel = make((UML_Relationship) agg, "aggregation");
+			
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, -20.0, 10.0, -10.0);
+			
+			connectArrow(line, arrow);
+
+			rel.getChildren().add(arrow);
+
+			rel.getStyleClass().add("aggregation");
 
 			return rel;
 		}
@@ -618,6 +666,15 @@ public class UML_View extends Application {
 		private Group make(UML_Association assoc) {
 			var rel = make((UML_Relationship) assoc, "association");
 
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, 0.0, 10.0, -10.0, 0.0, 0.0);
+			
+			connectArrow(line, arrow);
+			
+			rel.getChildren().add(arrow);
+			
+			rel.getStyleClass().add("association");
+			
 			return rel;
 		}
 
@@ -630,7 +687,16 @@ public class UML_View extends Application {
 		 */
 		private Group make(UML_Composition comp) {
 			var rel = make((UML_Relationship) comp, "composition");
+			
+			var line = (Line) rel.getChildren().get(1);
+			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, -20.0, 10.0, -10.0);
+			
+			connectArrow(line, arrow);
 
+			rel.getChildren().add(arrow);
+
+			rel.getStyleClass().add("composition");
+			
 			return rel;
 		}
 
@@ -714,20 +780,51 @@ public class UML_View extends Application {
 			l.startXProperty().bind(rel.getSource().centerXProperty());
 			l.startYProperty().bind(rel.getSource().centerYProperty());
 
-			l.setOnMouseClicked((e) -> {
-				focus(() -> {
-					l.setStroke(Color.BLACK);
-				});
-
-				l.setStroke(Color.DARKTURQUOISE);
-
-				inspect.update(rel);
-
-				e.consume();
-			});
-
-			var name = new Label(rel.getName());
-			name.textProperty().bind(rel.nameProperty());
+			var text = "";
+			if (rel instanceof UML_Association)
+			{
+				text += ((UML_Association) rel).getSourceMultiplictyLower();
+				text += "..";
+				text += ((UML_Association) rel).getSourceMultiplictyUpper();
+				text += "\t";
+				text += rel.getName();
+				text += "\t";
+				text += ((UML_Association) rel).getTargetMultiplictyLower();
+				text += "..";
+				text += ((UML_Association) rel).getTargetMultiplictyUpper();
+			}
+			else
+				text = rel.getName();
+			
+			var name = new Label(text);
+			
+			if (rel instanceof UML_Association)
+			{
+				name.textProperty().bind(
+					Bindings.createStringBinding(
+						() -> {
+							var newText = "";
+							newText += ((UML_Association) rel).getSourceMultiplictyLower();
+							newText += "..";
+							newText += ((UML_Association) rel).getSourceMultiplictyUpper();
+							newText += "\t\t";
+							newText += rel.hasName() ? rel.getName() : "";
+							newText += "\t\t";
+							newText += ((UML_Association) rel).getTargetMultiplictyLower();
+							newText += "..";
+							newText += ((UML_Association) rel).getTargetMultiplictyUpper();
+							return newText;
+						}, 
+						rel.nameProperty(), 
+						((UML_Association) rel).sourceMultiplictyLowerProperty(), 
+						((UML_Association) rel).sourceMultiplictyUpperProperty(), 
+						((UML_Association) rel).targetMultiplictyLowerProperty(), 
+						((UML_Association) rel).targetMultiplictyUpperProperty()
+					)
+				);
+			}
+			else
+				name.textProperty().bind(rel.nameProperty());
 
 			// Does not handle divide by 0
 			
@@ -745,7 +842,21 @@ public class UML_View extends Application {
 			name.layoutYProperty().bind(l.startYProperty().add(l.endYProperty().subtract(l.startYProperty()).divide(2))
 					.subtract(name.heightProperty().divide(2).add(10)));
 
-			return new Group(name, l);
+			var g = new Group(name, l);
+			
+			g.setOnMouseClicked((e) -> {
+				focus(() -> {
+					g.setOpacity(1.0);
+				});
+
+				g.setOpacity(0.8);
+
+				inspect.update(rel);
+
+				e.consume();
+			});
+			
+			return g;
 		}
 	}
 
@@ -946,6 +1057,32 @@ public class UML_View extends Application {
 			clear();
 			addComponent(delete(rel));
 			addComponent(name(rel));
+			
+			if (rel instanceof UML_Association) {
+				var sourceMultiplictyLower = new TextField(((UML_Association) rel).getSourceMultiplictyLower());
+				sourceMultiplictyLower.setOnKeyTyped((e) -> {
+					((UML_Association) rel).putSourceMultiplictyLower(sourceMultiplictyLower.getText());
+				});
+				addComponent(new HBox(label("Source Multiplicty Lower"), sourceMultiplictyLower));
+				
+				var sourceMultiplictyUpper = new TextField(((UML_Association) rel).getSourceMultiplictyUpper());
+				sourceMultiplictyUpper.setOnKeyTyped((e) -> {
+					((UML_Association) rel).putSourceMultiplictyUpper(sourceMultiplictyUpper.getText());
+				});
+				addComponent(new HBox(label("Source Multiplicty Upper"), sourceMultiplictyUpper));
+				
+				var targetMultiplictyLower = new TextField(((UML_Association) rel).getTargetMultiplictyLower());
+				targetMultiplictyLower.setOnKeyTyped((e) -> {
+					((UML_Association) rel).putTargetMultiplictyLower(targetMultiplictyLower.getText());
+				});
+				addComponent(new HBox(label("Target Multiplicty Lower"), targetMultiplictyLower));
+				
+				var targetMultiplictyUpper = new TextField(((UML_Association) rel).getTargetMultiplictyUpper());
+				targetMultiplictyUpper.setOnKeyTyped((e) -> {
+					((UML_Association) rel).putTargetMultiplictyUpper(targetMultiplictyUpper.getText());
+				});
+				addComponent(new HBox(label("Target Multiplicty Upper"), targetMultiplictyUpper));
+			}
 		}
 	}
 }
