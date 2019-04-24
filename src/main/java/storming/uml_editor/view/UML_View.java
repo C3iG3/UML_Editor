@@ -410,29 +410,36 @@ public class UML_View extends Application {
 
 			for (var attr : cbox.getAttributes()) {
 				var attrVisibility = new Text(attr.getVisibility());
-				attrVisibility.textProperty().bind(attr.visibilityProperty());
+				attrVisibility.textProperty().bind(attr.visibilityProperty().concat(" "));
 				attrVisibility.setFill(Color.web("#ee0290"));
 
 				var attrName = new Text(attr.getName());
-				attrName.textProperty().bind(attr.nameProperty());
+				attrName.textProperty().bind(attr.nameProperty().concat(": "));
 				attrName.setFill(Color.web("#FFFFFF"));
 				var attrType = new Text(attr.getType());
 				attrType.textProperty().bind(attr.typeProperty());
 				attrType.setFill(Color.web("#FFFFFF"));
-				content.getChildren().add(new HBox(attrVisibility, attrName, attrType));
+				
+				var entry = new HBox(attrVisibility, attrName, attrType);
+				entry.setId(cbox.getKey().toString() + '-' + attr.getKey().toString());
+				
+				content.getChildren().add(entry);
 			}
 
 			content.getChildren().add(new Separator());
 
 			for (var op : cbox.getOperations()) {
 				var opVisibility = new Text(op.getVisibility());
-				opVisibility.textProperty().bind(op.visibilityProperty());
+				opVisibility.textProperty().bind(op.visibilityProperty().concat(" "));
 				opVisibility.setFill(Color.web("#ee0290"));
 				var opSignature = new Text(op.getSignature());
 				opSignature.textProperty().bind(op.signatureProperty());
 				opSignature.setFill(Color.web("#FFFFFF"));
+				
+				var entry = new HBox(opVisibility, opSignature);
+				entry.setId(cbox.getKey().toString() + '-' + op.getKey().toString());
 
-				content.getChildren().add(new HBox(opVisibility, opSignature));
+				content.getChildren().add(entry);
 			}
 
 			content.getChildren().add(new Separator());
@@ -999,8 +1006,20 @@ public class UML_View extends Application {
 				attrType.setOnKeyTyped((e) -> {
 					attr.putType(attrType.getText());
 				});
+				
+				var entry = new HBox(choose, attrName, attrType);
+				
+				var del = button("Delete", (e) -> {
+					cbox.removeAttribute(attr.getKey());
+					inspector.getChildren().remove(entry);
+					
+					var displayCbox = ((StackPane) items.lookup('#' + cbox.getKey().toString()));
+					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + attr.getKey().toString()));
+				});
+				
+				entry.getChildren().add(del);
 
-				addComponent(new HBox(choose, attrName, attrType));
+				addComponent(entry);
 			}
 						
 			addComponent(button("Add Operation", (e) -> {
@@ -1032,8 +1051,20 @@ public class UML_View extends Application {
 				opSignature.setOnKeyTyped((e) -> {
 					op.putSignature(opSignature.getText());
 				});
+				
+				var entry = new HBox(choose, opSignature);
+				
+				var del = button("Delete", (e) -> {
+					cbox.removeAttribute(op.getKey());
+					inspector.getChildren().remove(entry);
+					
+					var displayCbox = ((StackPane) items.lookup('#' + cbox.getKey().toString()));
+					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + op.getKey().toString()));
+				});
+				
+				entry.getChildren().add(del);
 
-				addComponent(new HBox(choose, opSignature));
+				addComponent(entry);
 			}			
 			var extra_label = label("Extra");
 			TextArea extra = new TextArea(cbox.getExtra());
