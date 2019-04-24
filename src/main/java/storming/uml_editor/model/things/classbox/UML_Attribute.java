@@ -1,5 +1,7 @@
 package storming.uml_editor.model.things.classbox;
 
+import org.json.JSONObject;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -228,6 +230,34 @@ public class UML_Attribute {
 	 */
 	public Long getKey() {
 		return key;
+	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Attribute
+	 * 
+	 * @return A JSONObject representing the UML Attribute
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("name", getName());
+		json.put("visibility", getVisibility());
+		json.put("type", getType());
+		return json;
+	}
+	
+	/**
+	 * Returns a UML Attribute represented by the given JSON
+	 * 
+	 * @return A UML Attribute
+	 */
+	public static UML_Attribute fromJSON(JSONObject json)
+	{
+		var attr = new UML_Attribute();
+		attr.putName(json.optString("name"));
+		attr.putVisibility(json.optString("visibility"));
+		attr.putType(json.optString("type"));
+		
+		return attr;
 	}
 	
 	/**

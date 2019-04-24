@@ -1,6 +1,7 @@
 package storming.uml_editor.model.things;
 
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 
 /**
  * A class that represents a UML Structural Thing

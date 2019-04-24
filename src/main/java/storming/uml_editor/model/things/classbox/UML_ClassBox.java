@@ -3,9 +3,14 @@ package storming.uml_editor.model.things.classbox;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import storming.uml_editor.model.UML_Element;
 import storming.uml_editor.model.things.UML_StructuralThing;
 
 /**
@@ -266,6 +271,63 @@ public class UML_ClassBox extends UML_StructuralThing {
 	 */
 	public DoubleBinding centerYProperty() {
 		return yProperty().add(heightProperty().divide(2));
+	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Class Box
+	 * 
+	 * @return A JSONObject representing the UML Class Box
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("type", "classbox");
+		json.put("name", getName());
+		json.put("x", getX());
+		json.put("y", getY());
+		json.put("width", getWidth());
+		json.put("height", getHeight());
+		
+		var attrs = new JSONObject();
+		attributes.forEach((key, attr) -> {
+			attrs.put(key.toString(), attr.toJSON());
+		});
+		
+		var ops = new JSONObject();
+		operations.forEach((key, op) -> {
+			ops.put(key.toString(), op.toJSON());
+		});
+		
+		json.put("attributes", attrs);
+		json.put("operations", ops);
+		json.put("extra", getExtra());
+		return json;
+	}
+	
+	/**
+	 * Returns a UML Class Box represented by the given JSON
+	 * 
+	 * @return A UML Class Box
+	 */
+	public static UML_ClassBox fromJSON(JSONObject json)
+	{
+		var cbox = new UML_ClassBox();
+		cbox.putName(json.optString("name"));
+		cbox.setX(json.getDouble("x"));
+		cbox.setY(json.getDouble("y"));
+		cbox.setWidth(json.getDouble("width"));
+		cbox.setHeight(json.getDouble("height"));
+		
+		var attr_keys = json.getJSONObject("attributes").keys();
+		while (attr_keys.hasNext())
+			cbox.putAttribute(UML_Attribute.fromJSON(json.getJSONObject("attributes").getJSONObject(attr_keys.next())));
+		
+		var op_keys = json.getJSONObject("operations").keys();
+		while (op_keys.hasNext())
+			cbox.putOperation(UML_Operation.fromJSON(json.getJSONObject("operations").getJSONObject(op_keys.next())));
+		
+		cbox.putExtra(json.optString("extra"));
+		
+		return cbox;
 	}
 	
 	/**

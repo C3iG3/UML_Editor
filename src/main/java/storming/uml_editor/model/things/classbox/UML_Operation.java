@@ -1,5 +1,7 @@
 package storming.uml_editor.model.things.classbox;
 
+import org.json.JSONObject;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -159,6 +161,32 @@ public class UML_Operation {
 	 */
 	public Long getKey() {
 		return key;
+	}
+	
+	/**
+	 * Returns a JSONObject representing the UML Operation
+	 * 
+	 * @return A JSONObject representing the UML Operation
+	 */
+	public JSONObject toJSON() {
+		var json = new JSONObject();
+		json.put("visibility", getVisibility());
+		json.put("signature", getSignature());
+		return json;
+	}
+	
+	/**
+	 * Returns a UML Operation represented by the given JSON
+	 * 
+	 * @return A UML Operation
+	 */
+	public static UML_Operation fromJSON(JSONObject json)
+	{
+		var op = new UML_Operation();
+		op.putVisibility(json.optString("visibility"));
+		op.putSignature(json.optString("signature"));
+		
+		return op;
 	}
 	
 	/**
