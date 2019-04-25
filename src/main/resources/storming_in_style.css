@@ -14,7 +14,13 @@ Inspector
 
  }
 
+.spacer {
+	-fx-fill: transparent;
+}
 
+Separator {
+	-fx-background: white;
+}
 
 .inspector_labels {
 	-fx-text-fill: white;
@@ -24,7 +30,7 @@ Inspector
 
 .inspector_buttons {
 	-fx-background-color: #3B3C3D;
-	-fx-boarder-color: transparent;
+	-fx-border-color: transparent;
 	-fx-text-fill: orange;
 	/* -fx-translate-y: 5; */
 
@@ -32,18 +38,19 @@ Inspector
 .inspector_buttons:hover {
 	-fx-background-color: orange;
 	-fx-text-fill: black;
-	-fx-boarder-color: transparent;
+	-fx-border-color: transparent;
 
 }
 
 .inspector_buttons:pressed {
 	-fx-background-color: #c45100;
-	-fx-boarder-color: transparent;
+	-fx-border-color: transparent;
 
 }
 
 .classbox {
 	-fx-background-color: #6002EE;
+	-fx-border-color: #6002EE;
 }
 
 .dependency Polygon {
@@ -104,6 +111,7 @@ Inspector
 
 #items {
 	-fx-background-color: #1F2021;
+	-fx-border-color: #1F2021;
 }
 
 #top {
@@ -115,11 +123,13 @@ Inspector
 }
 
 #scroll {
-	-fx-background-color: black;
+	-fx-background-color: #1F2021;
+	-fx-border-color: #1F2021;
 }
 
 #ap {
 	-fx-background-color: #1F2021;
+	-fx-border-color: #1F2021;
 
 
 
@@ -132,7 +142,8 @@ Inspector
     -fx-background-repeat: no-repeat;
     -fx-background-position: 50%;
 	-fx-background-color: transparent;
-	-fx-border-color: black;
+	/* -fx-border-color: black; */
+	-fx-border-color: #1F2021 transparent #1F2021 transparent;
 	-fx-text-fill: white;
 }
 

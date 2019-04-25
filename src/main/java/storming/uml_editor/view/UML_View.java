@@ -92,7 +92,7 @@ public class UML_View extends Application {
 	private Runnable onUnfocus = null;
 
 	@FXML
-	private VBox inspector = new VBox(100.0);
+	private VBox inspector;
 
 	@FXML
 	private ScrollPane scroll;
@@ -484,7 +484,7 @@ public class UML_View extends Application {
 			mask.getStyleClass().add("classbox-mask");
 
 			var resize = new Rectangle(10, 10);
-			resize.setFill(Color.DARKGRAY);
+			resize.setFill(Color.WHITE);
 			// This needs to rest on top of the normal mask to be dragged
 			resize.getStyleClass().add("classbox-mask");
 
@@ -548,7 +548,7 @@ public class UML_View extends Application {
 
 			box.setOnMouseClicked((e) -> {
 				focus(() -> {
-					content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+					content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("6002EE"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 				});
 
 				content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("EE6002"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -561,7 +561,7 @@ public class UML_View extends Application {
 			});
 
 			focus(() -> {
-				content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+				content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("6002EE"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 			});
 			
 			content.setBorder(new javafx.scene.layout.Border(new BorderStroke(Color.web("EE6002"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -834,9 +834,9 @@ public class UML_View extends Application {
 							newText += ((UML_Association) rel).getSourceMultiplictyLower();
 							newText += "..";
 							newText += ((UML_Association) rel).getSourceMultiplictyUpper();
-							newText += "\t\t";
+							newText += "\t";
 							newText += rel.hasName() ? rel.getName() : "";
-							newText += "\t\t";
+							newText += "\t";
 							newText += ((UML_Association) rel).getTargetMultiplictyLower();
 							newText += "..";
 							newText += ((UML_Association) rel).getTargetMultiplictyUpper();
@@ -944,8 +944,8 @@ public class UML_View extends Application {
 		 * @param elem The UML_Element to delete
 		 * @return A Node representing the delete button
 		 */
-		private Button delete(UML_Element elem) {
-			return button("Delete Classbox", (e) -> {
+		private Button delete(UML_Element elem, String text) {
+			return button(text, (e) -> {
 				controller.remove(elem.getKey());
 				UML_View.this.drawer.delete(elem);
 
@@ -986,7 +986,9 @@ public class UML_View extends Application {
 		 * @return A rectangle for spacing
 		 */
 		private Rectangle spacer(int height) {
-			return new Rectangle(1, height);
+			var r = new Rectangle(1, height);
+			r.getStyleClass().add("spacer");
+			return r;
 		}
 
 		/**
@@ -1036,6 +1038,7 @@ public class UML_View extends Application {
 
 				var choose = new ChoiceBox<String>(FXCollections.observableArrayList(choices));
 				choose.setMinWidth(70);
+				choose.setMinHeight(30);
 				if (attr.getVisibility() == null)
 					choose.setValue("");
 				else
@@ -1047,12 +1050,14 @@ public class UML_View extends Application {
 
 				var attrName = new TextField(attr.getName());
 				attrName.setMinWidth(70);
+				attrName.setMinHeight(30);
 				attrName.setOnKeyTyped((e) -> {
 					attr.putName(attrName.getText());
 				});
 
 				var attrType = new TextField(attr.getType());
 				attrType.setMinWidth(70);
+				attrType.setMinHeight(30);
 				attrType.setOnKeyTyped((e) -> {
 					attr.putType(attrType.getText());
 				});
@@ -1068,6 +1073,7 @@ public class UML_View extends Application {
 					var displayCbox = ((StackPane) items.lookup('#' + cbox.getKey().toString()));
 					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + attr.getKey().toString()));
 				});
+				del.setMinHeight(30);
 				del.setMinWidth(30);
 				
 				
@@ -1105,6 +1111,7 @@ public class UML_View extends Application {
 
 				var choose = new ChoiceBox<String>(FXCollections.observableArrayList(choices));
 				choose.setMinWidth(70);
+				choose.setMinHeight(30);
 				if (op.getVisibility() == null)
 					choose.setValue("");
 				else
@@ -1116,6 +1123,7 @@ public class UML_View extends Application {
 
 				var opSignature = new TextField(op.getSignature());
 				opSignature.setMinWidth(150);
+				opSignature.setMinHeight(30);
 				opSignature.setOnKeyTyped((e) -> {
 					op.putSignature(opSignature.getText());
 				});
@@ -1133,6 +1141,7 @@ public class UML_View extends Application {
 					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + op.getKey().toString()));
 				});
 				del.setMinWidth(30);
+				del.setMinHeight(30);
 				
 				hEntry.getChildren().add(del);
 				
@@ -1148,12 +1157,13 @@ public class UML_View extends Application {
 			extra.setOnKeyTyped((e) -> {
 				cbox.putExtra(extra.getText());
 			});
+			extra.setMinHeight(200);
 			
 			inspector.getChildren().addAll(extra_label, extra);
 			
 			addComponent(spacer(20));
 			
-			var del = delete(cbox);
+			var del = delete(cbox, "Delete Classbox");
 			
 			addComponent(del);
 		}
@@ -1166,34 +1176,52 @@ public class UML_View extends Application {
 		 */
 		public void update(UML_Relationship rel) {
 			clear();
-			addComponent(delete(rel));
-			addComponent(name(rel));
+			
+			var vName = new VBox(label("Name"), 
+					  name(rel));
+			vName.setSpacing(5);
+			addComponent(vName);
+			
+			addComponent(spacer(20));
 			
 			if (rel instanceof UML_Association) {
 				var sourceMultiplictyLower = new TextField(((UML_Association) rel).getSourceMultiplictyLower());
 				sourceMultiplictyLower.setOnKeyTyped((e) -> {
 					((UML_Association) rel).putSourceMultiplictyLower(sourceMultiplictyLower.getText());
 				});
-				addComponent(new HBox(label("Source Multiplicty Lower"), sourceMultiplictyLower));
+				var vSML = new VBox(label("Source Multiplicty Lower"), sourceMultiplictyLower);
+				vSML.setSpacing(5);
+				addComponent(vSML);
+				addComponent(spacer(20));
 				
 				var sourceMultiplictyUpper = new TextField(((UML_Association) rel).getSourceMultiplictyUpper());
 				sourceMultiplictyUpper.setOnKeyTyped((e) -> {
 					((UML_Association) rel).putSourceMultiplictyUpper(sourceMultiplictyUpper.getText());
 				});
-				addComponent(new HBox(label("Source Multiplicty Upper"), sourceMultiplictyUpper));
+				var vSMU = new VBox(label("Source Multiplicty Upper"), sourceMultiplictyUpper);
+				vSMU.setSpacing(5);
+				addComponent(vSMU);
+				addComponent(spacer(20));
 				
 				var targetMultiplictyLower = new TextField(((UML_Association) rel).getTargetMultiplictyLower());
 				targetMultiplictyLower.setOnKeyTyped((e) -> {
 					((UML_Association) rel).putTargetMultiplictyLower(targetMultiplictyLower.getText());
 				});
-				addComponent(new HBox(label("Target Multiplicty Lower"), targetMultiplictyLower));
+				var vTML = new VBox(label("Target Multiplicty Lower"), targetMultiplictyLower);
+				vTML.setSpacing(5);
+				addComponent(vTML);
+				addComponent(spacer(20));
 				
 				var targetMultiplictyUpper = new TextField(((UML_Association) rel).getTargetMultiplictyUpper());
 				targetMultiplictyUpper.setOnKeyTyped((e) -> {
 					((UML_Association) rel).putTargetMultiplictyUpper(targetMultiplictyUpper.getText());
 				});
-				addComponent(new HBox(label("Target Multiplicty Upper"), targetMultiplictyUpper));
+				var vTMU = new VBox(label("Target Multiplicty Upper"), targetMultiplictyUpper);
+				vTMU.setSpacing(5);
+				addComponent(vTMU);
+				addComponent(spacer(20));
 			}
+			addComponent(delete(rel, "Delete Relationship"));
 		}
 	}
 }
