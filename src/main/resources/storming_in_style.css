@@ -248,3 +248,48 @@ ScrollPane {
 
 }
 
+.choice-box {
+  -fx-background-color: #3B3C3D;
+  -fx-mark-color: orange;
+}
+
+.choice-box > .label {
+  -fx-text-fill:white;
+}
+
+
+.choice-box:hover {
+  -fx-background-color: orange;
+  -fx-mark-color: white; 
+}
+
+.choice-box:pressed {
+  -fx-background-color: #c45100;
+  -fx-mark-color: white; 
+}
+
+.choice-box .mark {
+
+
+}
+
+
+/*Background color of the whole context menu*/
+.choice-box .context-menu { 
+	-fx-background-color: #3B3C3D;
+}
+
+/*Focused item background color in the list*/
+.choice-box .menu-item:focused { 
+	-fx-background-color: orange; 
+}
+
+/*Text color of non-focused items in the list*/
+.choice-box .menu-item > .label {
+ -fx-text-fill: white; 
+}
+
+/* Text color of focused item in the list */
+.choice-box .menu-item:focused > .label {
+ -fx-text-fill: black; 
+}
