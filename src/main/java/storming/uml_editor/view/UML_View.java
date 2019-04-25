@@ -39,6 +39,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -91,7 +92,7 @@ public class UML_View extends Application {
 	private Runnable onUnfocus = null;
 
 	@FXML
-	private VBox inspector;
+	private VBox inspector = new VBox(100.0);
 
 	@FXML
 	private ScrollPane scroll;
@@ -121,6 +122,8 @@ public class UML_View extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/storming-logo.png")));
+		
 		primaryStage.setTitle("Storming UML Editor");
 		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/try.fxml"))));
 
@@ -410,11 +413,23 @@ public class UML_View extends Application {
 
 			for (var attr : cbox.getAttributes()) {
 				var attrVisibility = new Text(attr.getVisibility());
-				attrVisibility.textProperty().bind(attr.visibilityProperty().concat(" "));
+				// Fancy binding stops null from being output when empty
+				attrVisibility.textProperty().bind(
+					Bindings
+					.when(attr.visibilityProperty().isEmpty())
+					.then(" ")
+					.otherwise(attr.visibilityProperty().concat(" "))
+				);
 				attrVisibility.setFill(Color.web("#ee0290"));
 
 				var attrName = new Text(attr.getName());
-				attrName.textProperty().bind(attr.nameProperty().concat(": "));
+				// Fancy binding stops null from being output when empty
+				attrName.textProperty().bind(
+					Bindings
+					.when(attr.nameProperty().isEmpty())
+					.then("")
+					.otherwise(attr.nameProperty().concat(": "))
+				);
 				attrName.setFill(Color.web("#FFFFFF"));
 				var attrType = new Text(attr.getType());
 				attrType.textProperty().bind(attr.typeProperty());
@@ -430,7 +445,12 @@ public class UML_View extends Application {
 
 			for (var op : cbox.getOperations()) {
 				var opVisibility = new Text(op.getVisibility());
-				opVisibility.textProperty().bind(op.visibilityProperty().concat(" "));
+				opVisibility.textProperty().bind(
+					Bindings
+					.when(op.visibilityProperty().isEmpty())
+					.then(" ")
+					.otherwise(op.visibilityProperty().concat(" "))
+				);
 				opVisibility.setFill(Color.web("#ee0290"));
 				var opSignature = new Text(op.getSignature());
 				opSignature.textProperty().bind(op.signatureProperty());
@@ -886,7 +906,7 @@ public class UML_View extends Application {
 		 * @param text The text to be in the label
 		 * @return A Node representing the label
 		 */
-		private Node label(String text) {
+		private Label label(String text) {
 			Label l = new Label(text);
 			l.getStyleClass().add("inspector_labels");
 			return l;
@@ -924,7 +944,7 @@ public class UML_View extends Application {
 		 * @param elem The UML_Element to delete
 		 * @return A Node representing the delete button
 		 */
-		private Node delete(UML_Element elem) {
+		private Button delete(UML_Element elem) {
 			return button("Delete Classbox", (e) -> {
 				controller.remove(elem.getKey());
 				UML_View.this.drawer.delete(elem);
@@ -941,7 +961,7 @@ public class UML_View extends Application {
 		 * @param onAction The action to carry out when the button is clicked
 		 * @return A Node representing the button
 		 */
-		private Node button(String text, EventHandler<ActionEvent> onAction) {
+		private Button button(String text, EventHandler<ActionEvent> onAction) {
 			var button = new Button(text);
 			button.getStyleClass().add("inspector_buttons");
 			button.setOnAction(onAction);
@@ -957,6 +977,17 @@ public class UML_View extends Application {
 		private void addComponent(Node n) {
 			inspector.getChildren().add(n);
 		}
+		
+		/**
+		 * Creates a spacer for spacing elements out in the inspector. This
+		 * should not really be needed but for some reason the VBox will not
+		 * space things itself.
+		 * 
+		 * @return A rectangle for spacing
+		 */
+		private Rectangle spacer(int height) {
+			return new Rectangle(1, height);
+		}
 
 		/**
 		 * Update the inspector to show and be able to modify the values of the given
@@ -967,18 +998,34 @@ public class UML_View extends Application {
 		public void update(UML_ClassBox cbox) {
 			clear();
 					
-			addComponent(delete(cbox));
+			var vName = new VBox(label("Name"), 
+					  name(cbox));
+			vName.setSpacing(5);
 			
-			addComponent(new VBox(label("Name"), 
-								  name(cbox)));
+			addComponent(vName);
+			addComponent(spacer(20));
 			
 			addComponent(button("Add Attribute", (e) -> {
 				cbox.putAttribute(new UML_Attribute());
 
 				drawer.draw(cbox);
 			}));
+			
+			addComponent(spacer(5));
+			
+			var attrVisLabel = label("Visibility");
+			attrVisLabel.setMinWidth(70);
+			
+			var attrNameLabel = label("Name");
+			attrNameLabel.setMinWidth(70);
+			
+			var attrTypeLabel = label("Type");
+			attrTypeLabel.setMinWidth(70);
 
-			addComponent(new HBox(label("Visibility"), label("Name"), label("Type")));
+			var attrTitles = new HBox(attrVisLabel, attrNameLabel, attrTypeLabel);
+			attrTitles.setSpacing(3);
+			
+			addComponent(attrTitles);
 
 			for (var attr : cbox.getAttributes()) {
 				var choices = new ArrayList<String>();
@@ -988,6 +1035,7 @@ public class UML_View extends Application {
 				choices.add("");
 
 				var choose = new ChoiceBox<String>(FXCollections.observableArrayList(choices));
+				choose.setMinWidth(70);
 				if (attr.getVisibility() == null)
 					choose.setValue("");
 				else
@@ -998,37 +1046,55 @@ public class UML_View extends Application {
 				});
 
 				var attrName = new TextField(attr.getName());
+				attrName.setMinWidth(70);
 				attrName.setOnKeyTyped((e) -> {
 					attr.putName(attrName.getText());
 				});
 
 				var attrType = new TextField(attr.getType());
+				attrType.setMinWidth(70);
 				attrType.setOnKeyTyped((e) -> {
 					attr.putType(attrType.getText());
 				});
 				
-				var entry = new HBox(choose, attrName, attrType);
+				var entry = new VBox(spacer(5));
 				
-				var del = button("Delete", (e) -> {
+				var hEntry = new HBox(3);
+				
+				var del = button("X", (e) -> {
 					cbox.removeAttribute(attr.getKey());
 					inspector.getChildren().remove(entry);
 					
 					var displayCbox = ((StackPane) items.lookup('#' + cbox.getKey().toString()));
 					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + attr.getKey().toString()));
 				});
+				del.setMinWidth(30);
 				
-				entry.getChildren().add(del);
+				
+				hEntry.getChildren().addAll(choose, attrName, attrType, del);
+				
+				entry.getChildren().add(hEntry);
 
 				addComponent(entry);
 			}
+			
+			addComponent(spacer(20));
 						
 			addComponent(button("Add Operation", (e) -> {
 				cbox.putOperation(new UML_Operation());
 
 				drawer.draw(cbox);
 			}));
+			
+			addComponent(spacer(5));
+			
+			var opVisLabel = label("Visibility");
+			var opSigLabel = label("Signature");
+			
+			var opTitles = new HBox(opVisLabel, opSigLabel);
+			opTitles.setSpacing(3);
 
-			addComponent(new HBox(label("Visibility"), label("Signature")));
+			addComponent(opTitles);
 
 			for (var op : cbox.getOperations()) {
 				var choices = new ArrayList<String>();
@@ -1038,6 +1104,7 @@ public class UML_View extends Application {
 				choices.add("");
 
 				var choose = new ChoiceBox<String>(FXCollections.observableArrayList(choices));
+				choose.setMinWidth(70);
 				if (op.getVisibility() == null)
 					choose.setValue("");
 				else
@@ -1048,31 +1115,47 @@ public class UML_View extends Application {
 				});
 
 				var opSignature = new TextField(op.getSignature());
+				opSignature.setMinWidth(150);
 				opSignature.setOnKeyTyped((e) -> {
 					op.putSignature(opSignature.getText());
 				});
 				
-				var entry = new HBox(choose, opSignature);
+				var entry = new VBox(spacer(5));
+						
+				var hEntry = new HBox(choose, opSignature);
+				hEntry.setSpacing(3);
 				
-				var del = button("Delete", (e) -> {
-					cbox.removeAttribute(op.getKey());
+				var del = button("X", (e) -> {
+					cbox.removeOperation(op.getKey());
 					inspector.getChildren().remove(entry);
 					
 					var displayCbox = ((StackPane) items.lookup('#' + cbox.getKey().toString()));
 					((VBox) displayCbox.getChildren().get(1)).getChildren().remove(displayCbox.lookup('#' + cbox.getKey().toString() + '-' + op.getKey().toString()));
 				});
+				del.setMinWidth(30);
 				
-				entry.getChildren().add(del);
+				hEntry.getChildren().add(del);
+				
+				entry.getChildren().add(hEntry);
 
 				addComponent(entry);
 			}			
+			
+			addComponent(spacer(20));
+			
 			var extra_label = label("Extra");
 			TextArea extra = new TextArea(cbox.getExtra());
 			extra.setOnKeyTyped((e) -> {
 				cbox.putExtra(extra.getText());
 			});
-
+			
 			inspector.getChildren().addAll(extra_label, extra);
+			
+			addComponent(spacer(20));
+			
+			var del = delete(cbox);
+			
+			addComponent(del);
 		}
 
 		/**
