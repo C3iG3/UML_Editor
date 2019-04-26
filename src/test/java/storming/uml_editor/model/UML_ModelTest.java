@@ -254,7 +254,53 @@ public class UML_ModelTest {
 		g1.putTarget(roalty);
 		g2.putTarget(roalty);
 		assertEquals(roalty, g1.getTarget(), "updated generalization should refelct roalty"); 
-		assertEquals(roalty, g2.getTarget(), "updated generalization should refelct roalty"); 
+		assertEquals(roalty, g2.getTarget(), "updated generalization should refelct roalty");
+		
+		
+		//testing associations
+		//default value is "*" before being set
+		assertEquals("*", a1.getSourceMultiplictyLower(), "getsource lower should be *");
+		assertEquals("*", a1.getSourceMultiplictyUpper(), "getsource upper should be *"); 
+		assertEquals("*", a1.getTargetMultiplictyLower(), "getTarget lower should be *");
+		assertEquals("*", a1.getTargetMultiplictyUpper(), "getTarget upper should be *"); 
+		a1.putSourceMultiplictyLower(a1.getSourceMultiplictyLower());
+		a1.putSourceMultiplictyUpper(a1.getSourceMultiplictyUpper());
+		a1.putTargetMultiplictyLower(a1.getSourceMultiplictyLower());
+		a1.putTargetMultiplictyUpper(a1.getSourceMultiplictyUpper());
+		assertEquals("*", a1.getSourceMultiplictyLower(), "getsourcemultiplicity should be *");
+		assertEquals("*", a1.getSourceMultiplictyUpper(), "getsourcemultiplicity should be *"); 
+		assertEquals("*", a1.getSourceMultiplictyLower(), "gettargetmultiplicity should be *");
+		assertEquals("*", a1.getSourceMultiplictyUpper(), "gettargetmultiplicity should be *"); 
+		
+		
+		a1.putSourceMultiplictyLower("sourcelower");
+		a1.putSourceMultiplictyUpper("sourceupper");
+		a1.putTargetMultiplictyLower("targetlower");
+		a1.putTargetMultiplictyUpper("targetupper");
+		assertEquals("sourcelower", a1.getSourceMultiplictyLower(), "getsourcemultiplicity should be sourcelower");
+		assertEquals("sourceupper", a1.getSourceMultiplictyUpper(), "getsourcemultiplicity should be sourceupper"); 
+		assertEquals("targetlower", a1.getTargetMultiplictyLower(), "gettargetmultiplicity should be targetlower");
+		assertEquals("targetupper", a1.getTargetMultiplictyUpper(), "gettargetmultiplicity should be targetupper"); 
+		a1.putSourceMultiplictyLower(null);
+		a1.putSourceMultiplictyUpper(null);
+		a1.putTargetMultiplictyLower(null);
+		a1.putTargetMultiplictyUpper(null);
+		assertEquals(null, a1.getSourceMultiplictyLower(), "getsourcemultiplicity should be null");
+		assertEquals(null, a1.getSourceMultiplictyUpper(), "getsourcemultiplicity should be null"); 
+		assertEquals(null, a1.getSourceMultiplictyLower(), "gettargetmultiplicity should be null");
+		assertEquals(null, a1.getSourceMultiplictyUpper(), "gettargetmultiplicity should be null"); 
+		a1.putSourceMultiplictyLower(a1.getSourceMultiplictyLower());
+		a1.putSourceMultiplictyUpper(a1.getSourceMultiplictyUpper());
+		a1.putTargetMultiplictyLower(a1.getSourceMultiplictyLower());
+		a1.putTargetMultiplictyUpper(a1.getSourceMultiplictyUpper());
+		assertEquals(null, a1.getSourceMultiplictyLower(), "getsourcemultiplicity should be null");
+		assertEquals(null, a1.getSourceMultiplictyUpper(), "getsourcemultiplicity should be null"); 
+		assertEquals(null, a1.getSourceMultiplictyLower(), "gettargetmultiplicity should be null");
+		assertEquals(null, a1.getSourceMultiplictyUpper(), "gettargetmultiplicity should be null"); 
+		
+		
+		
+		
 	}
 	
 	
