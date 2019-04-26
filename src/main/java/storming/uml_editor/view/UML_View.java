@@ -230,7 +230,7 @@ public class UML_View extends Application {
 	@FXML
 	private void save(ActionEvent event) {
 		var filepath = new FileChooser().showSaveDialog(items.getScene().getWindow()).getAbsolutePath();
-		filepath += ".json";
+		filepath += ".storm";
 
 		controller.save(filepath);
 	}
