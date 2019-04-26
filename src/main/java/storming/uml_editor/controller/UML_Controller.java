@@ -3,6 +3,7 @@ package storming.uml_editor.controller;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.TreeMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -118,18 +119,17 @@ public class UML_Controller {
 			return false;
 		}
 		
-		/* 
-		 * Class Boxes are always handled first because relationships can only be drawn
-		 * if the class boxes already exist. This is inefficient since instead of a T(N)
-		 * complexity it is T(2N).
-		 */
-		
+		var jsonMap = new TreeMap<Long, org.json.simple.JSONObject>();
 		json.forEach((key, value) -> {
+			jsonMap.put(Long.parseLong((String) key), (org.json.simple.JSONObject) value);
+		});
+		
+		jsonMap.forEach((key, value) -> {
 			var obj = new org.json.JSONObject(((org.json.simple.JSONObject) value).toJSONString());
 			
 			if (obj.getString("type").equals("classbox"))
 			{
-				draw(put(UML_ClassBox.fromJSON(obj)));
+				draw(model.put(UML_ClassBox.fromJSON(obj), key));
 			}
 		
 			if (!obj.getString("type").equals("classbox"))
@@ -166,7 +166,7 @@ public class UML_Controller {
 					((UML_Association) rel).putTargetMultiplictyUpper(obj.optString("targetMultiplicityUpper"));
 				}
 				
-				draw(put(rel));
+				draw(model.put(rel, key));
 			}
 		});
 		

@@ -47,6 +47,20 @@ public class UML_Model {
 		elements.put(elem.getKey(), elem);
 		return elem;
 	}
+	
+	/**
+	 * Puts an element into the model with a specific key
+	 * This can cause HUGE issues, please be careful when using this
+	 *
+	 * @param e The element to put into the model
+	 * @param key The key to put the element at
+	 * @return The element put into the model
+	 */
+	public <T extends UML_Element> T put(T elem, long key) {
+		if (key > currKey)
+			currKey = key;
+		return put(elem);
+	}
 
 	/**
 	 * Removes an element from the model
