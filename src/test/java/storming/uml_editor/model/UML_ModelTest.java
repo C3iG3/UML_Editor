@@ -297,10 +297,6 @@ public class UML_ModelTest {
 		assertEquals(null, a1.getSourceMultiplictyUpper(), "getsourcemultiplicity should be null"); 
 		assertEquals(null, a1.getSourceMultiplictyLower(), "gettargetmultiplicity should be null");
 		assertEquals(null, a1.getSourceMultiplictyUpper(), "gettargetmultiplicity should be null"); 
-		
-		
-		
-		
 	}
 	
 	
