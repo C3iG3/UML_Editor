@@ -98,16 +98,17 @@ public class UML_Controller {
 	}
 
 	/**
-	 * TODO When file loading is added
+	 * Load an existing .storm file from the given file path
 	 *
-	 * Load an existing UML file given a file path
-	 *
-	 * @return TRUE on success; FALSE on failure
+	 * @return 
+	 * 	true on success; 
+	 * 	false on failure
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean load(String path) {
 		view.clear();
 		
+		// Clear current model
 		model = new UML_Model(this);
 		
 		JSONObject json = null;
@@ -117,6 +118,12 @@ public class UML_Controller {
 			return false;
 		}
 		
+		/* 
+		 * Class Boxes are always handled first because relationships can only be drawn
+		 * if the class boxes already exist. This is inefficient since instead of a T(N)
+		 * complexity it is T(2N).
+		 */
+		
 		json.forEach((key, value) -> {
 			var obj = new org.json.JSONObject(((org.json.simple.JSONObject) value).toJSONString());
 			
@@ -124,16 +131,7 @@ public class UML_Controller {
 			{
 				draw(put(UML_ClassBox.fromJSON(obj)));
 			}
-		});
 		
-		/*		
-		 * Relationships are handled outside their classes since they need access to the model to
-		 * set their sources and targets and they do not have that access.
-		 * This is also inefficient since classboxes will be iterated over again
-		 */
-		json.forEach((key, value) -> {
-			var obj = new org.json.JSONObject(((org.json.simple.JSONObject) value).toJSONString());
-			
 			if (!obj.getString("type").equals("classbox"))
 			{
 				UML_Relationship rel = null;
@@ -176,11 +174,11 @@ public class UML_Controller {
 	}
 
 	/**
-	 * TODO When file loading is added
+	 * Save an existing .storm file to the given file path
 	 *
-	 * Save the current state of the model to a given file path
-	 *
-	 * @return TRUE on success; FALSE on failure
+	 * @return 
+	 * 	true on success; 
+	 * 	false on failure
 	 */
 	public boolean save(String path) {
 		var json = model.toJSON();
