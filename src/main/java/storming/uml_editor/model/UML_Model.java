@@ -10,7 +10,9 @@ import storming.uml_editor.controller.UML_Controller;
  * A model for a UML editor
  */
 public class UML_Model {
+	@SuppressWarnings("unused")
 	private UML_Controller controller = null;
+	
 	private HashMap<Long, UML_Element> elements = new HashMap<>();
 
 	private long currKey = 0;

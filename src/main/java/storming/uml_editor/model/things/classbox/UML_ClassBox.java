@@ -3,14 +3,11 @@ package storming.uml_editor.model.things.classbox;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import storming.uml_editor.model.UML_Element;
 import storming.uml_editor.model.things.UML_StructuralThing;
 
 /**

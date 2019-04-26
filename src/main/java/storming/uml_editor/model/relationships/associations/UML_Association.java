@@ -49,7 +49,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The lower bound of the source's multiplicity of the element, if it has one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String getSourceMultiplictyLower() {
 		return sourceMultiplicityLower.get();
@@ -61,7 +61,7 @@ public class UML_Association extends UML_Relationship {
 	 * @param name The lower bound of the source's multiplicity for the element
 	 * @return
 	 * 	The previous lower bound of the source's multiplicity of the element, if it had one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String putSourceMultiplictyLower(String lower) {
 		var temp = this.sourceMultiplicityLower.get();
@@ -75,7 +75,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The removed lower bound of the source's multiplicity, if there was one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String removeSourceMultiplictyLower() {
 		return putSourceMultiplictyLower("*");
@@ -94,7 +94,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The upper bound of the source's multiplicity of the element, if it has one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String getSourceMultiplictyUpper() {
 		return sourceMultiplicityUpper.get();
@@ -106,7 +106,7 @@ public class UML_Association extends UML_Relationship {
 	 * @param name The upper bound of the source's multiplicity for the element
 	 * @return
 	 * 	The previous upper bound of the source's multiplicity of the element, if it had one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String putSourceMultiplictyUpper(String upper) {
 		var temp = this.sourceMultiplicityUpper.get();
@@ -120,7 +120,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The removed upper bound of the source's multiplicity, if there was one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String removeSourceMultiplictyUpper() {
 		return putSourceMultiplictyUpper("*");
@@ -139,7 +139,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The lower bound of the target's multiplicity of the element, if it has one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String getTargetMultiplictyLower() {
 		return targetMultiplicityLower.get();
@@ -151,7 +151,7 @@ public class UML_Association extends UML_Relationship {
 	 * @param name The lower bound of the target's multiplicity for the element
 	 * @return
 	 * 	The previous lower bound of the target's multiplicity of the element, if it had one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String putTargetMultiplictyLower(String lower) {
 		var temp = this.targetMultiplicityLower.get();
@@ -165,7 +165,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The removed lower bound of the target's multiplicity, if there was one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String removeTargetMultiplictyLower() {
 		return putTargetMultiplictyLower("*");
@@ -184,7 +184,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The upper bound of the target's multiplicity of the element, if it has one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String getTargetMultiplictyUpper() {
 		return targetMultiplicityUpper.get();
@@ -196,7 +196,7 @@ public class UML_Association extends UML_Relationship {
 	 * @param name The upper bound of the target's multiplicity for the element
 	 * @return
 	 * 	The previous upper bound of the target's multiplicity of the element, if it had one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String putTargetMultiplictyUpper(String upper) {
 		var temp = this.targetMultiplicityUpper.get();
@@ -210,7 +210,7 @@ public class UML_Association extends UML_Relationship {
 	 * 
 	 * @return
 	 * 	The removed upper bound of the target's multiplicity, if there was one;
-	 * 	null otherwise
+	 * 	"*" otherwise
 	 */
 	public String removetargetMultiplictyUpper() {
 		return putTargetMultiplictyUpper("*");

@@ -1,72 +1,46 @@
 package storming.uml_editor.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
-import javafx.css.Style;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.print.PageLayout;
-import javafx.print.PageOrientation;
-import javafx.print.Paper;
-import javafx.print.PrintResolution;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.input.ZoomEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
-import javafx.scene.text.TextFlow;
-import javafx.scene.transform.Scale;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -83,6 +57,9 @@ import storming.uml_editor.model.things.classbox.UML_Attribute;
 import storming.uml_editor.model.things.classbox.UML_ClassBox;
 import storming.uml_editor.model.things.classbox.UML_Operation;
 
+/**
+ * A JavaFX view for a UML Model
+ */
 public class UML_View extends Application {
 	private UML_Controller controller;
 
@@ -212,8 +189,15 @@ public class UML_View extends Application {
 		items.setScaleY(items.getScaleY() * event.getZoomFactor());
 	}
 
-	// Snapshot idea from:
-	// https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	/**
+	 * A function utilized by JavaFX that opens a save dialog and prints a 
+	 * UML diagram to a PDF
+	 * 
+	 * @param event The ActionEvent that triggered this function
+	 */
+	/*
+	 * idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	 */
 	@FXML
 	void print(ActionEvent event) {
 		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
@@ -227,6 +211,12 @@ public class UML_View extends Application {
 		}
 	}
 
+	/**
+	 * A function utilized by JavaFX that opens a save dialog and saves the 
+	 * UML diagram to .storm file
+	 * 
+	 * @param event The ActionEvent that triggered this function
+	 */
 	@FXML
 	private void save(ActionEvent event) {
 		var filepath = new FileChooser().showSaveDialog(items.getScene().getWindow()).getAbsolutePath();
@@ -235,6 +225,12 @@ public class UML_View extends Application {
 		controller.save(filepath);
 	}
 	
+	/**
+	 * A function utilized by JavaFX that opens a open dialog and opens a
+	 * .storm file
+	 * 
+	 * @param event The ActionEvent that triggered this function
+	 */
 	@FXML
 	private void load(ActionEvent event) {
 		var filepath = new FileChooser().showOpenDialog(items.getScene().getWindow()).getAbsolutePath();
@@ -244,10 +240,6 @@ public class UML_View extends Application {
 	/**
 	 * A helper utilized for putting a Relationship on the screen. This handles
 	 * setting up an EventFilter to catch which Class Boxes were clicked
-	 *
-	 * ** BUG ** if the user clicks on something not a classbox this will fail due
-	 * to a null pointer exception. This has to do with the 'while' loop that finds
-	 * the StackPane parent
 	 *
 	 * @param rel The relationship that is having its source and target set
 	 */
@@ -400,8 +392,11 @@ public class UML_View extends Application {
 		private StackPane make(UML_ClassBox cbox) {
 			var content = new VBox();
 
-			// If you put the styling at the end, the rest of the code blocks the css from
-			// coming through
+			/*
+			 *  If you put the styling at the end, the rest of the code blocks the css from
+			 *  coming through
+			 */
+			
 			content.getStyleClass().add("classbox");
 
 			var name = new Text(cbox.getName());
@@ -445,6 +440,7 @@ public class UML_View extends Application {
 
 			for (var op : cbox.getOperations()) {
 				var opVisibility = new Text(op.getVisibility());
+				// Fancy binding stops null from being output when empty
 				opVisibility.textProperty().bind(
 					Bindings
 					.when(op.visibilityProperty().isEmpty())
@@ -625,7 +621,7 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Dependency
 		 */
 		private Group make(UML_Dependency dep) {
-			var rel = make((UML_Relationship) dep, "dependency");
+			var rel = make((UML_Relationship) dep);
 
 			var line = (Line) rel.getChildren().get(1);
 			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, 0.0, 10.0, -10.0, 0.0, 0.0);
@@ -647,7 +643,7 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Generalization
 		 */
 		private Group make(UML_Generalization gen) {
-			var rel = make((UML_Relationship) gen, "generalization");
+			var rel = make((UML_Relationship) gen);
 
 			var line = (Line) rel.getChildren().get(1);
 			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 10.0, -10.0);
@@ -669,7 +665,7 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Aggregation
 		 */
 		private Group make(UML_Aggregation agg) {
-			var rel = make((UML_Relationship) agg, "aggregation");
+			var rel = make((UML_Relationship) agg);
 			
 			var line = (Line) rel.getChildren().get(1);
 			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, -20.0, 10.0, -10.0);
@@ -691,7 +687,7 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Association
 		 */
 		private Group make(UML_Association assoc) {
-			var rel = make((UML_Relationship) assoc, "association");
+			var rel = make((UML_Relationship) assoc);
 
 			var line = (Line) rel.getChildren().get(1);
 			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, 0.0, 10.0, -10.0, 0.0, 0.0);
@@ -713,7 +709,7 @@ public class UML_View extends Application {
 		 * @return A Group that represents a Composition
 		 */
 		private Group make(UML_Composition comp) {
-			var rel = make((UML_Relationship) comp, "composition");
+			var rel = make((UML_Relationship) comp);
 			
 			var line = (Line) rel.getChildren().get(1);
 			var arrow = new Polygon(0.0, 0.0, -10.0, -10.0, 0.0, -20.0, 10.0, -10.0);
@@ -734,12 +730,15 @@ public class UML_View extends Application {
 		 * @param rel The UML_Relationship to represent
 		 * @return A Group that represents a Relationship
 		 */
-		private Group make(UML_Relationship rel, String style_type) {
+		private Group make(UML_Relationship rel) {
 			var l = new Line(rel.getSource().getX(), rel.getSource().getY(), rel.getTarget().getX(),
 					rel.getTarget().getY());
-
-			// l.getStyleClass().add(style_type);
 			
+			/*
+			 * This next chunk of code is a massive group of math that calculates where
+			 * the arrow of a line should be placed at in relation to a relationships
+			 * target
+			 */
 			DoubleBinding xDist = rel.getSource().centerXProperty().subtract(rel.getTarget().centerXProperty());
 			DoubleBinding yDist = rel.getTarget().centerYProperty().subtract(rel.getSource().centerYProperty());
 			DoubleBinding theta = Bindings.createDoubleBinding(() -> {
@@ -753,6 +752,10 @@ public class UML_View extends Application {
 				return Math.toDegrees(Math.atan((target.heightProperty().get() / 2) / (target.widthProperty().get() / 2)));
 			}, target.widthProperty(), target.heightProperty());
 			
+			/*
+			 *  The subtract and add 20s in some of the return lines is padding so that arrows do not
+			 *  get covered by the Class Box they point to
+			 */
 			l.endXProperty()
 			.bind(
 				Bindings
@@ -778,6 +781,10 @@ public class UML_View extends Application {
 				)
 			);
 			
+			/*
+			 *  The subtract and add 20s in some of the return lines is padding so that arrows do not
+			 *  get covered by the Class Box they point to
+			 */
 			l.endYProperty()
 			.bind(
 				Bindings
@@ -803,7 +810,6 @@ public class UML_View extends Application {
 				)
 			);
 			
-
 			l.startXProperty().bind(rel.getSource().centerXProperty());
 			l.startYProperty().bind(rel.getSource().centerYProperty());
 
@@ -853,19 +859,17 @@ public class UML_View extends Application {
 			else
 				name.textProperty().bind(rel.nameProperty());
 
-			// Does not handle divide by 0
-			
 			var width = rel.getSource().centerXProperty().subtract(rel.getTarget().centerXProperty());
 			var height = rel.getSource().centerYProperty().subtract(rel.getTarget().centerYProperty());
 
-			// return can be one-lined
+			// Does not handle divide by 0
 			name.rotateProperty().bind(Bindings.createDoubleBinding(() -> {
 				return Math.toDegrees(Math.atan(height.get() / width.get()));
 			}, width, height));
 
 			name.layoutXProperty().bind(l.startXProperty().add(l.endXProperty().subtract(l.startXProperty()).divide(2))
 					.subtract(name.widthProperty().divide(2)));
-			// That add 10 is just a padding (this really should not be here)
+			// The add 10 is just a padding
 			name.layoutYProperty().bind(l.startYProperty().add(l.endYProperty().subtract(l.startYProperty()).divide(2))
 					.subtract(name.heightProperty().divide(2).add(10)));
 
@@ -910,17 +914,6 @@ public class UML_View extends Application {
 			Label l = new Label(text);
 			l.getStyleClass().add("inspector_labels");
 			return l;
-		}
-
-		/**
-		 * Creates a node containing a label of the given text that should be treated as
-		 * the title of the inspector
-		 *
-		 * @param text The text of the title
-		 * @return A Node representing the title
-		 */
-		private Node title(String text) {
-			return label(text);
 		}
 
 		/**
@@ -1029,6 +1022,7 @@ public class UML_View extends Application {
 			
 			addComponent(attrTitles);
 
+			// Go through attributes
 			for (var attr : cbox.getAttributes()) {
 				var choices = new ArrayList<String>();
 				choices.add("+");
@@ -1102,6 +1096,7 @@ public class UML_View extends Application {
 
 			addComponent(opTitles);
 
+			// Go through operations
 			for (var op : cbox.getOperations()) {
 				var choices = new ArrayList<String>();
 				choices.add("+");
