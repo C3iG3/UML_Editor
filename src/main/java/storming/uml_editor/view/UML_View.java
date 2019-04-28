@@ -26,6 +26,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.BorderStroke;
@@ -196,19 +197,17 @@ public class UML_View extends Application {
 	 * @param event The ActionEvent that triggered this function
 	 */
 	/*
-	 * idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	 * snapshot idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	 * higher res idea from: https://stackoverflow.com/questions/32288411/how-to-save-a-high-dpi-snapshot-of-a-javafx-canvas
 	 */
 	@FXML
 	void print(ActionEvent event) {
 		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
-		System.out.println(out);
-		var img = items.snapshot(null, null);
+		var img = items.snapshot(null, new WritableImage((int) items.getWidth(), (int) items.getHeight()));
 
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 	}
 
 	/**
