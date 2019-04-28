@@ -18,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -26,6 +27,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.BorderStroke;
@@ -202,7 +204,15 @@ public class UML_View extends Application {
 	void print(ActionEvent event) {
 		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
 		System.out.println(out);
-		var img = items.snapshot(null, null);
+		
+		var tempX = items.getScaleX();
+		var tempY = items.getScaleY();
+		items.setScaleX(1.0);
+		items.setScaleY(1.0);
+		var img = items.snapshot(new SnapshotParameters(), null);
+		items.setScaleX(tempX);
+		items.setScaleY(tempY);
+
 
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", out);
