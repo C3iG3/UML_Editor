@@ -198,7 +198,8 @@ public class UML_View extends Application {
 	 * @param event The ActionEvent that triggered this function
 	 */
 	/*
-	 * idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	 * snapshot idea from: https://stackoverflow.com/questions/23590974/how-to-take-snapshot-from-node-which-is-not-on-the-scene
+	 * higher res idea from: https://stackoverflow.com/questions/32288411/how-to-save-a-high-dpi-snapshot-of-a-javafx-canvas
 	 */
 	@FXML
 	void print(ActionEvent event) {
@@ -216,9 +217,7 @@ public class UML_View extends Application {
 
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 	}
 
 	/**
