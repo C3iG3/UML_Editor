@@ -204,13 +204,12 @@ public class UML_View extends Application {
 	@FXML
 	void print(ActionEvent event) {
 		var out = new FileChooser().showSaveDialog(items.getScene().getWindow());
-		System.out.println(out);
 		
 		var tempX = items.getScaleX();
 		var tempY = items.getScaleY();
 		items.setScaleX(1.0);
 		items.setScaleY(1.0);
-		var img = items.snapshot(new SnapshotParameters(), null);
+		var img = items.snapshot(null, null);
 		items.setScaleX(tempX);
 		items.setScaleY(tempY);
 
